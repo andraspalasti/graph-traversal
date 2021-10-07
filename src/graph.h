@@ -10,7 +10,11 @@ typedef struct Graph {
 } Graph;
 
 /*
-* Reads a graph from a file
+* Reads a graph from a csv file
+* The csv should look like this:
+* AA;10;10
+* OA;-678;-166
+* FD;31;392
 */
 Graph *read_graph_from_file(char *fname);
 

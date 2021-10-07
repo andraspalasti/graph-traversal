@@ -19,14 +19,14 @@ char *get_field(char *line, int n) {
     return NULL;
 }
 
-Graph *read_graph_from_file(char *fname) {
+Graph *read_graph_from_file(char *fpath) {
     Graph *g = init_graph();
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
     ssize_t line_length;
 
-    fp = fopen(fname, "r");
+    fp = fopen(fpath, "r");
     if (fp == NULL) {
         return NULL;
     }
@@ -53,6 +53,7 @@ Graph *read_graph_from_file(char *fname) {
         add_node_to_graph(g, *init_node(name, (Coordinate){.x = x, .y = y}));
     }
 
+    fclose(fpath);
     free(line);
     return g;
 }

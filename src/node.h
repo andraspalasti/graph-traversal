@@ -19,6 +19,7 @@ void add_edge_to_node(Node n, Edge e);
 
 /*
 * Instantiates a new node
+* name could not be more than $(MAX_NAME_LENGTH - 1) 
 */
 Node *init_node(char *name, Coordinate coord);
 
