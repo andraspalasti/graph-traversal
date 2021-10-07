@@ -1,0 +1,9 @@
+# IDE
+.vscode
+
+*.csv
+
+# compiler files
+*.dSYM
+out
+graph
