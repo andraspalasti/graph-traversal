@@ -5,7 +5,9 @@ typedef struct Coordinate {
     int x, y;
 } Coordinate;
 
-// double distance(coordinates p1, coordinates p2);
-void print_coords(Coordinate p);
+/*
+* Prints a graph to the console
+*/
+void print_coords(Coordinate coord);
 
 #endif

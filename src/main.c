@@ -1,19 +1,19 @@
 #include "graph.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(void) {
-    Graph g = init_graph();
-
-    char name = 'A';
-
-    for (int i = 0; i < 32; i++) {
-        Node n = {.id = i + 1,
-                  .name = name + i,
-                  .coord = {.x = i, .y = i}};
-        add_node_to_graph(&g, n);
+    Graph *g = read_graph_from_file("nodes.csv");
+    if (g == NULL) {
+        printf("Error: There was a problem with the file\n");
+        // This could mean:
+        // - could not open file
+        // - wrong separator csv should be separated with ';'
+        // - in a line it could not find name or x or y coords
+        exit(EXIT_FAILURE);
     }
 
-    print_graph(g);
+    print_graph(*g);
 
     return 0;
 }
