@@ -53,7 +53,7 @@ Graph *read_graph_from_file(char *fpath) {
         add_node_to_graph(g, *init_node(name, (Coordinate){.x = x, .y = y}));
     }
 
-    fclose(fpath);
+    fclose(fp);
     free(line);
     return g;
 }

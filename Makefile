@@ -1,10 +1,25 @@
-default: build
+TARGET = app
 
-build:
-	gcc -o graph src/main.c src/graph.c src/coordinate.c src/edges.c src/node.c
+SRCS  = $(shell find ./src -type f -name *.c)
+HEADS = $(shell find ./src -type f -name *.h)
+OBJS = $(SRCS:.c=.o)
+
+CC = gcc
+LDFLAGS = -lm -g
+
+
+all: $(TARGET)
+
+$(TARGET):
+	$(CC) -o $(TARGET) $(SRCS)
+	@./$(TARGET)
+
+run: all
+	@./$(TARGET)
 
 debug:
-	gcc -o graph src/main.c src/graph.c src/coordinate.c src/edges.c src/node.c -g
+	$(CC) -o $(TARGET) $(SRCS) -g
 
-run: build
-	./graph
+clean:
+	$(RM) $(OBJS) $(TARGET)
+	$(RM) -r *.dSYM/
