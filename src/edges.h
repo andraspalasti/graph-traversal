@@ -1,29 +1,26 @@
 #ifndef EDGES_H_
 #define EDGES_H_
 
-typedef struct Edge {
-    int node_index;
-} Edge;
+#include <stdlib.h>
 
-typedef struct ArrayOfEdges {
-    Edge *edges; // array
-    int used;
-    int size;
-} ArrayOfEdges;
-
-/*
-* Adds an edge to an array of edges
-*/
-void add_edge(ArrayOfEdges *array, Edge edge);
+typedef struct Edges {
+    size_t *adjacent_nodes; // array that stores the index of adjacent nodes
+    size_t used, size;
+} Edges;
 
 /*
 * Instantiates a new array of edges
 */
-ArrayOfEdges init_edges(void);
+Edges *init_edges(void);
+
+/*
+* Frees memory allocated by edges
+*/
+void free_edges(Edges *e);
 
 /*
 * Prints an edge to the console
 */
-void print_edges(ArrayOfEdges array);
+void print_edges(Edges e);
 
 #endif

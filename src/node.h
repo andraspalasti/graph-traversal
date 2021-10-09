@@ -1,27 +1,24 @@
 #ifndef NODE_H_
 #define NODE_H_
 
-#include "coordinate.h"
+#include "coordinates.h"
 #include "edges.h"
 
-#define MAX_NAME_LENGTH 11
-
 typedef struct Node {
-    char name[MAX_NAME_LENGTH];
-    Coordinate coord;
-    ArrayOfEdges neighbors;
+    char *name;
+    Coordinates coords;
+    Edges *neighbors;
 } Node;
 
 /*
-* Adds an edge to a node
+* Instantiates a new node
 */
-void add_edge_to_node(Node n, Edge e);
+Node *init_node(char *name, Coordinates coords);
 
 /*
-* Instantiates a new node
-* name could not be more than $(MAX_NAME_LENGTH - 1) 
+* Frees the memory allocated by the node
 */
-Node *init_node(char *name, Coordinate coord);
+void free_node(Node *n);
 
 /*
 * Prints a node to the console

@@ -5,20 +5,23 @@ HEADS = $(shell find ./src -type f -name *.h)
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc
-LDFLAGS = -lm -g
 
+CFLAGS =  -Wall -Wextra -Wpedantic -std=c99 \
+          -Wformat=2 -Wno-unused-parameter -Wshadow \
+          -Wwrite-strings -Wstrict-prototypes -Wold-style-definition \
+          -Wredundant-decls -Wnested-externs -Wmissing-include-dirs
 
 all: $(TARGET)
 
 $(TARGET):
-	$(CC) -o $(TARGET) $(SRCS)
+	$(CC) -o $(TARGET) $(SRCS) $(CFLAGS)
 	@./$(TARGET)
 
 run: all
 	@./$(TARGET)
 
 debug:
-	$(CC) -o $(TARGET) $(SRCS) -g
+	$(CC) -o $(TARGET) $(SRCS) $(CFLAGS) -g
 
 clean:
 	$(RM) $(OBJS) $(TARGET)

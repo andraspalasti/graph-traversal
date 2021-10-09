@@ -3,7 +3,11 @@
 #include <stdlib.h>
 
 int main(void) {
-    Graph *g = read_graph_from_file("nodes.csv");
+    printf("Provide a file to read from: \n");
+    char fpath[20];
+    scanf("%s", fpath);
+
+    Graph *g = read_graph_from_file(fpath);
     if (g == NULL) {
         printf("Error: There was a problem with the file\n");
         // This could mean:
