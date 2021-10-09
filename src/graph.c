@@ -24,12 +24,28 @@ Graph *init_graph(void) {
 /*
 * Frees the memory allocated by the graph
 */
-Graph *free_graph(void);
+void free_graph(Graph *g) {
+    for (size_t i = 0; i < g->used; i++) {
+        free_node(g->nodes[i]);
+    }
+    free(g->nodes);
+    free(g);
+};
 
 /*
 * Prints a graph to the console
 */
-void print_graph(Graph g);
+void print_graph(Graph g) {
+    printf("--- GRAPH ---\n");
+    printf("Size: %d\n", g.size);
+    printf("Number of nodes: %d\n", g.used);
+    printf("Nodes:\n");
+
+    for (int i = 0; i < g.used; i++) {
+        printf("---\n");
+        print_node(*(g.nodes[i]));
+    }
+}
 
 // char *get_field(char *line, int n) {
 // char *token;
@@ -131,16 +147,4 @@ void print_graph(Graph g);
 // g->used = 0;
 // g->size = 5;
 // return g;
-// }
-
-// void print_graph(Graph g) {
-// printf("--- GRAPH ---\n");
-// printf("Size: %d\n", g.size);
-// printf("Number of nodes: %d\n", g.used);
-// printf("Nodes:\n");
-
-// for (int i = 0; i < g.used; i++) {
-// printf("---\n");
-// print_node(g.nodes[i]);
-// }
 // }

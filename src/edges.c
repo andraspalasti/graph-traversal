@@ -23,8 +23,8 @@ void free_edges(Edges *e) {
 
 void print_edges(Edges e) {
     printf("[");
-    for (int i = 0; i < e.used; i++) {
-        printf("%d%s", e.adjacent_nodes[i], i == e.used - 1 ? "" : ", ");
+    for (size_t i = 0; i < e.used; i++) {
+        printf("%lu%s", e.adjacent_nodes[i], i == e.used - 1 ? "" : ", ");
     }
     printf("]\n");
 }
