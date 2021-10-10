@@ -26,10 +26,15 @@ typedef struct Graph {
 // */
 // void *read_edges_from_file_to_graph(char *fname, Graph *g);
 
-// /*
-// * Adds a node to a graph
-// */
-// void add_node_to_graph(Graph *g, Node n);
+/*
+* Adds a node to a graph
+*/
+void add_node(Graph *g, Node *n);
+
+/*
+* Removes a node from the graph
+*/
+void remove_node(Graph *g, size_t node_idx);
 
 /*
 * Instantiates a new graph
@@ -39,7 +44,7 @@ Graph *init_graph(void);
 /*
 * Frees the memory allocated by the graph
 */
-Graph *free_graph(void);
+void free_graph(Graph *g);
 
 /*
 * Prints a graph to the console
