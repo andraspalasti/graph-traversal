@@ -13,7 +13,7 @@ CFLAGS =  -Wall -Wextra -Wpedantic -std=c99 \
 
 all: $(TARGET)
 
-$(TARGET):
+$(TARGET): $(SRCS) $(HEADS)
 	$(CC) -o $(TARGET) $(SRCS) $(CFLAGS)
 	@./$(TARGET)
 

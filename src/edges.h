@@ -9,6 +9,17 @@ typedef struct Edges {
 } Edges;
 
 /*
+* Adds a node's index to the list of edges
+*/
+void add_node_idx(Edges *e, size_t node_index);
+
+/*
+* Searches for the specified value if found it deletes it
+* than shifts the values left
+*/
+void remove_node_idx(Edges *e, size_t node_index);
+
+/*
 * Instantiates a new array of edges
 */
 Edges *init_edges(void);
