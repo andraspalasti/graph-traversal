@@ -4,6 +4,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+* Searches for a node in the graph by name
+* if found returns pointer to node else it returns a NULL pointer
+*/
+Node *search_for_node(Graph g, char *node_name) {
+    for (size_t i = 0; i < g.used; i++) {
+        if (strcmp(g.nodes[i]->name, node_name) == 0) {
+            return g.nodes[i];
+        }
+    }
+    return NULL;
+}
+
 void add_node(Graph *g, Node *n) {
     if (g->used == g->size) {
         g->nodes = (Node **)realloc(g->nodes, g->size + 5);
@@ -77,105 +90,3 @@ void print_graph(Graph g) {
         print_node(*(g.nodes[i]));
     }
 }
-
-// char *get_field(char *line, int n) {
-// char *token;
-// char *str = strdup(line);
-// if (str == NULL)
-// return NULL;
-
-// token = strtok(str, ";");
-// while (token != NULL) {
-// if (n == 0) {
-// free(str);
-// return token;
-// }
-// n--;
-// token = strtok(NULL, ";");
-// }
-// free(str);
-// return NULL;
-// }
-
-// Graph *read_graph_from_file(char *fpath) {
-// FILE *fp;
-
-// fp = fopen(fpath, "r");
-// if (fp == NULL) {
-// perror("fopen");
-// return NULL;
-// }
-
-// Graph *g = init_graph();
-// char *line = NULL;
-// size_t len = 0;
-// int line_num = 1;
-
-// while (getline(&line, &len, fp) != EOF) {
-// char *name;
-// char *field;
-// int x, y;
-
-// field = get_field(line, 0);
-// if (field != NULL) {
-// name = strdup(field);
-// if (name == NULL) {
-// return NULL;
-// }
-// } else {
-// printf("You did not provide a name in your file on line %d\n", line_num);
-// return NULL;
-// }
-
-// field = get_field(line, 1);
-// if (field == NULL || sscanf(field, "%d", &x) != 1) {
-// printf("You did not provide an x Coordinates in your file on line %d\n", line_num);
-// return NULL;
-// }
-
-// field = get_field(line, 2);
-// if (field == NULL || sscanf(field, "%d", &y) != 1) {
-// printf("You did not provide a y Coordinates in your file on line %d\n", line_num);
-// return NULL;
-// }
-
-// // Node *n = init_node(name, (Coordinates){.x = x, .y = y});
-// // if (n == NULL) {
-// // return NULL;
-// // }
-
-// // add_node_to_graph(g, *n);
-// line_num++;
-// }
-
-// fclose(fp);
-// return g;
-// }
-
-// void add_node_to_graph(Graph *g, Node n) {
-// if (g->used == g->size) {
-// g->size += 5;
-// Node *nodes = realloc(g->nodes, g->size * sizeof(Node));
-// if (nodes == NULL) {
-// // dont know what to do if we get a NULL pointer
-// }
-// g->nodes = nodes;
-// }
-// g->nodes[g->used++] = n;
-// }
-
-// Graph *init_graph(void) {
-// Graph *g = (Graph *)malloc(sizeof(Graph));
-// if (g == NULL)
-// return NULL;
-
-// Node *nodes = (Node *)calloc(5, sizeof(Node));
-// if (nodes == NULL) {
-// free(g);
-// return NULL;
-// }
-// g->nodes = nodes;
-// g->used = 0;
-// g->size = 5;
-// return g;
-// }

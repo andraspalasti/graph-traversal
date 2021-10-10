@@ -8,23 +8,11 @@ typedef struct Graph {
     size_t used, size;
 } Graph;
 
-// /*
-// * Reads a graph from a csv file
-// * The csv should look like this:
-// * AA;10;10;""
-// * OA;-678;-166;""
-// * FD;31;392;""
-// */
-// Graph *read_graph_from_file(char *fpath);
-
-// /*
-// * Reads a graph from a csv file
-// * The csv should look like this:
-// * AA;10;10;""
-// * OA;-678;-166;""
-// * FD;31;392;""
-// */
-// void *read_edges_from_file_to_graph(char *fname, Graph *g);
+/*
+* Searches for a node in the graph by name
+* if found returns pointer to node else it returns a NULL pointer
+*/
+Node *search_for_node(Graph g, char *node_name);
 
 /*
 * Adds a node to a graph
