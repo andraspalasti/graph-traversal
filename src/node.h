@@ -2,12 +2,12 @@
 #define NODE_H_
 
 #include "coordinates.h"
-#include "neighbour.h"
+#include "list_node.h"
 
 typedef struct Node {
     char name[21];
     Coordinates coords;
-    struct Neighbour *neighbours;
+    struct ListNode *neighbours;
 } Node;
 
 /*

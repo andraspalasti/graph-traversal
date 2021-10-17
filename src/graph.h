@@ -4,19 +4,14 @@
 #include "node.h"
 
 typedef struct Graph {
-    Node *node;
-    struct Graph *next_node;
+    ListNode *nodes;
 } Graph;
 
-// /*
-// * Adds a node to a graph
-// */
-// void add_node(Graph *g, Node *n);
-
-// /*
-// * Removes a node from the graph
-// */
-// void remove_node(Graph *g, size_t node_idx);
+/*
+* Adds a node to the graph at the specified position
+* @param pos starts at 0, you can insert to the end with pos = -1
+*/
+void add_node_at(int pos, Graph *g, Node *n);
 
 /*
 * Instantiates a new graph
@@ -31,6 +26,6 @@ void free_graph(Graph *g);
 /*
 * Prints a graph to the console
 */
-void print_graph(Graph g);
+void print_graph(Graph *g);
 
 #endif

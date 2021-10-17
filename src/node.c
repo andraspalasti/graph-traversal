@@ -1,5 +1,5 @@
 #include "node.h"
-#include "neighbour.h"
+#include "list_node.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,11 +7,10 @@
 
 /*
 * Adds a neighbour to the node at the specified position
-* You can insert to the end with pos = -1
-* @param pos starts at 0 
+* @param pos starts at 0, you can insert to the end with pos = -1
 */
 void add_neighbour_at(int pos, Node *n, Node *adjacent_node) {
-    Neighbour *neighbour = init_neighbour(adjacent_node);
+    ListNode *neighbour = init_list_node(adjacent_node);
     assert(neighbour != NULL);
 
     // if neighbour list is empty
@@ -21,8 +20,8 @@ void add_neighbour_at(int pos, Node *n, Node *adjacent_node) {
     }
 
     int idx = 0;
-    Neighbour *prev = NULL;
-    Neighbour *cur = n->neighbours;
+    ListNode *prev = NULL;
+    ListNode *cur = n->neighbours;
 
     // walk through list until pos or end is reached
     while (cur != NULL && idx != pos) {
@@ -69,7 +68,7 @@ Node *init_node(char *name, Coordinates coords) {
 * Frees the memory allocated by the node
 */
 void free_node(Node *n) {
-    free_neighbour(n->neighbours);
+    free_list_node(n->neighbours);
     free(n);
 }
 
@@ -81,5 +80,5 @@ void print_node(Node n) {
     print_coords(n.coords);
 
     printf("Neighbours: ");
-    print_neighbour(n.neighbours);
+    print_list_node(n.neighbours);
 }
