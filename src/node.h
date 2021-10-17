@@ -2,13 +2,19 @@
 #define NODE_H_
 
 #include "coordinates.h"
-#include "edges.h"
+#include "neighbour.h"
 
 typedef struct Node {
-    char *name;
+    char name[21];
     Coordinates coords;
-    Edges *neighbors;
+    struct Neighbour *neighbours;
 } Node;
+
+/*
+* Adds a neighbour to the node at the specified position
+* @param pos starts at 0, you can insert to the end with pos = -1
+*/
+void add_neighbour_at(int pos, Node *n, Node *adjacent_node);
 
 /*
 * Instantiates a new node

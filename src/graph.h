@@ -4,25 +4,19 @@
 #include "node.h"
 
 typedef struct Graph {
-    Node **nodes;
-    size_t used, size;
+    Node *node;
+    struct Graph *next_node;
 } Graph;
 
-/*
-* Searches for a node in the graph by name
-* if found returns pointer to node else it returns a NULL pointer
-*/
-Node *search_for_node(Graph g, char *node_name);
+// /*
+// * Adds a node to a graph
+// */
+// void add_node(Graph *g, Node *n);
 
-/*
-* Adds a node to a graph
-*/
-void add_node(Graph *g, Node *n);
-
-/*
-* Removes a node from the graph
-*/
-void remove_node(Graph *g, size_t node_idx);
+// /*
+// * Removes a node from the graph
+// */
+// void remove_node(Graph *g, size_t node_idx);
 
 /*
 * Instantiates a new graph

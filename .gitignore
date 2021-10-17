@@ -8,6 +8,7 @@
 *.csv
 
 # compiler files
+build
 *.dSYM
 *.o
-app
+graph-traversal
