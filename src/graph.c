@@ -15,6 +15,7 @@ Node *find_node(const Graph *g, const char *name) {
         if (strcmp(cur_ln->node->name, name) == 0) {
             return cur_ln->node;
         }
+        cur_ln = cur_ln->next_node;
     }
     return NULL;
 }
@@ -103,5 +104,7 @@ void print_graph(const Graph *g) {
     while (cur != NULL) {
         print_node(cur->node);
         cur = cur->next_node;
+        if (cur != NULL)
+            printf("---\n");
     }
 }

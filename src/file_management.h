@@ -20,4 +20,9 @@ void read_graph_from_csv(const char *fpath, Graph *g);
 */
 void read_nodes_from_csv(FILE *fp, Graph *g);
 
+/*
+* Reads the edges from a csv into a graph
+*/
+void read_edges_from_csv(FILE *fp, Graph *g);
+
 #endif
