@@ -27,3 +27,20 @@ void check_malloc(void *ptr) {
         exit(EXIT_FAILURE);
     }
 }
+
+/*
+* Removes all occurences of a specified char in a string
+*/
+void remove_chars(char *str, char char_to_remove) {
+    int i, j;
+    int len = strlen(str);
+    for (i = 0; i < len; i++) {
+        if (str[i] == char_to_remove) {
+            for (j = i; j < len; j++) {
+                str[j] = str[j + 1];
+            }
+            len--;
+            i--;
+        }
+    }
+}

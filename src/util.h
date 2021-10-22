@@ -14,4 +14,9 @@ void split(char *str, char *parts[], int num_of_splits, const char *sep);
 */
 void check_malloc(void *ptr);
 
+/*
+* Removes all occurences of a specified char in a string
+*/
+void remove_chars(char *str, char char_to_remove);
+
 #endif
