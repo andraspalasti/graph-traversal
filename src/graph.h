@@ -26,6 +26,6 @@ void free_graph(Graph *g);
 /*
 * Prints a graph to the console
 */
-void print_graph(Graph *g);
+void print_graph(const Graph *g);
 
 #endif

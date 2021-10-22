@@ -5,7 +5,7 @@
 #include "list_node.h"
 
 typedef struct Node {
-    char name[21];
+    char *name;
     Coordinates coords;
     struct ListNode *neighbours;
 } Node;
@@ -19,7 +19,7 @@ void add_neighbour_at(int pos, Node *n, Node *adjacent_node);
 /*
 * Instantiates a new node
 */
-Node *init_node(char *name, Coordinates coords);
+Node *init_node(const char *name, Coordinates coords);
 
 /*
 * Frees the memory allocated by the node
@@ -29,6 +29,6 @@ void free_node(Node *n);
 /*
 * Prints a node to the console
 */
-void print_node(Node n);
+void print_node(const Node *n);
 
 #endif

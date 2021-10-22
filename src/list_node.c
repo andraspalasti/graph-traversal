@@ -1,5 +1,5 @@
 #include "list_node.h"
-#include <assert.h>
+#include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,7 +8,7 @@
 */
 ListNode *init_list_node(Node *n) {
     ListNode *list_node = (ListNode *)malloc(sizeof(ListNode));
-    assert(list_node != NULL);
+    check_malloc(list_node);
     list_node->node = n;
     list_node->next_node = NULL;
     return list_node;
@@ -29,7 +29,7 @@ void free_list_node(ListNode *list_node) {
 /*
 * Prints the list_nodes to the console
 */
-void print_list_node(ListNode *list_node) {
+void print_list_node(const ListNode *list_node) {
     printf("[");
     while (list_node != NULL) {
         printf("%s%s", list_node->node->name, list_node->next_node != NULL ? ", " : "");

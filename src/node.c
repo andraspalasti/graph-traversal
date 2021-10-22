@@ -1,6 +1,6 @@
 #include "node.h"
 #include "list_node.h"
-#include <assert.h>
+#include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +11,6 @@
 */
 void add_neighbour_at(int pos, Node *n, Node *adjacent_node) {
     ListNode *neighbour = init_list_node(adjacent_node);
-    assert(neighbour != NULL);
 
     // if neighbour list is empty
     if (n->neighbours == NULL) {
@@ -51,13 +50,17 @@ void add_neighbour_at(int pos, Node *n, Node *adjacent_node) {
 /*
 * Instantiates a new node
 */
-Node *init_node(char *name, Coordinates coords) {
-    assert(strlen(name) < 21);
-
+Node *init_node(const char *name, Coordinates coords) {
     Node *n = (Node *)malloc(sizeof(Node));
-    assert(n != NULL);
+    check_malloc(n);
 
-    strcpy(n->name, name);
+    n->name = strdup(name);
+    if (n->name == NULL) {
+        free(n);
+        printf("Failed to allocate memory!\n");
+        exit(EXIT_FAILURE);
+    }
+
     n->coords = coords;
     n->neighbours = NULL;
 
@@ -69,16 +72,17 @@ Node *init_node(char *name, Coordinates coords) {
 */
 void free_node(Node *n) {
     free_list_node(n->neighbours);
+    free(n->name);
     free(n);
 }
 
 /*
 * Prints a node to the console
 */
-void print_node(Node n) {
-    printf("name: %s, coords: ", n.name);
-    print_coords(n.coords);
+void print_node(const Node *n) {
+    printf("name: %s, coords: ", n->name);
+    print_coords(n->coords);
 
     printf("Neighbours: ");
-    print_list_node(n.neighbours);
+    print_list_node(n->neighbours);
 }

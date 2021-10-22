@@ -14,4 +14,4 @@ C;-20;-20
 
 ![Data structure](./data_structure.svg)
 
-This is not going to be a directional graph an edge can be traversed both ways
+This is going to be a directional graph

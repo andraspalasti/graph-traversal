@@ -1,5 +1,5 @@
 #include "graph.h"
-#include <assert.h>
+#include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,7 +9,6 @@
 */
 void add_node_at(int pos, Graph *g, Node *n) {
     ListNode *ln = init_list_node(n);
-    assert(ln != NULL);
 
     // if graph is empty
     if (g->nodes == NULL) {
@@ -51,8 +50,7 @@ void add_node_at(int pos, Graph *g, Node *n) {
 */
 Graph *init_graph(void) {
     Graph *g = (Graph *)malloc(sizeof(Graph));
-    assert(g != NULL);
-
+    check_malloc(g);
     g->nodes = NULL;
 
     return g;
@@ -78,7 +76,7 @@ void free_graph(Graph *g) {
 /*
 * Prints a graph to the console
 */
-void print_graph(Graph *g) {
+void print_graph(const Graph *g) {
     if (g->nodes == NULL) {
         printf("There are no nodes in your graph\n");
         return;
@@ -87,7 +85,7 @@ void print_graph(Graph *g) {
     printf("--- GRAPH ---\n");
     ListNode *cur = g->nodes;
     while (cur != NULL) {
-        print_node(*(cur->node));
+        print_node(cur->node);
         cur = cur->next_node;
     }
 }

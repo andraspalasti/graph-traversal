@@ -21,6 +21,6 @@ void free_list_node(ListNode *list_node);
 /*
 * Prints a list_node to the console
 */
-void print_list_node(ListNode *list_node);
+void print_list_node(const ListNode *list_node);
 
 #endif
