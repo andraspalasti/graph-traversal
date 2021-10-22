@@ -15,4 +15,9 @@
 */
 void read_graph_from_csv(const char *fpath, Graph *g);
 
+/*
+* Reads the nodes from a csv into a graph
+*/
+void read_nodes_from_csv(FILE *fp, Graph *g);
+
 #endif
