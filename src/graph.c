@@ -2,6 +2,22 @@
 #include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+/*
+* Finds the node specified by the name
+* if found returns a pointer to the node
+* else it returns a null pointer
+*/
+Node *find_node(const Graph *g, const char *name) {
+    ListNode *cur_ln = g->nodes;
+    while (cur_ln != NULL) {
+        if (strcmp(cur_ln->node->name, name) == 0) {
+            return cur_ln->node;
+        }
+    }
+    return NULL;
+}
 
 /*
 * Adds a node to the graph at the specified position

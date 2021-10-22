@@ -8,6 +8,13 @@ typedef struct Graph {
 } Graph;
 
 /*
+* Finds the node specified by the name
+* if found returns a pointer to the node
+* else it returns a null pointer
+*/
+Node *find_node(const Graph *g, const char *name);
+
+/*
 * Adds a node to the graph at the specified position
 * @param pos starts at 0, you can insert to the end with pos = -1
 */
