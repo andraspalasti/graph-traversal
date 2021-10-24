@@ -4,7 +4,8 @@
 #include "node.h"
 
 typedef struct Graph {
-    ListNode *nodes;
+    Node **nodes;
+    int used, capacity;
 } Graph;
 
 /*
@@ -15,10 +16,15 @@ typedef struct Graph {
 Node *find_node(const Graph *g, const char *name);
 
 /*
-* Adds a node to the graph at the specified position
-* @param pos starts at 0, you can insert to the end with pos = -1
+* Adds a node to the graph
+* It inserts the node to the end
 */
-void add_node_at(int pos, Graph *g, Node *n);
+void add_node(Graph *g, Node *n);
+
+/*
+* Finds the node specified by the name and deletes it
+*/
+void delete_node(Graph *g, Node *n);
 
 /*
 * Instantiates a new graph

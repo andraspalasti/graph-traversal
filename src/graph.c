@@ -10,56 +10,54 @@
 * else it returns a null pointer
 */
 Node *find_node(const Graph *g, const char *name) {
-    ListNode *cur_ln = g->nodes;
-    while (cur_ln != NULL) {
-        if (strcmp(cur_ln->node->name, name) == 0) {
-            return cur_ln->node;
+    for (int i = 0; i < g->used; i++) {
+        if (strcmp(g->nodes[i]->name, name) == 0) {
+            return g->nodes[i];
         }
-        cur_ln = cur_ln->next_node;
     }
     return NULL;
 }
 
 /*
-* Adds a node to the graph at the specified position
-* @param pos starts at 0, you can insert to the end with pos = -1
+* Adds a node to the graph
+* It inserts the node to the end
 */
-void add_node_at(int pos, Graph *g, Node *n) {
-    ListNode *ln = init_list_node(n);
-
-    // if graph is empty
-    if (g->nodes == NULL) {
-        g->nodes = ln;
-        return;
+void add_node(Graph *g, Node *n) {
+    // the allocated array is full
+    if (g->used == g->capacity) {
+        g->nodes = realloc(g->nodes, g->capacity + 10);
+        check_malloc(g->nodes);
+        g->capacity += 10;
     }
+    g->nodes[g->used] = n;
+    g->used += 1;
+}
 
-    int idx = 0;
-    ListNode *prev = NULL;
-    ListNode *cur = g->nodes;
-
-    // walk through list until pos or end is reached
-    while (cur != NULL && idx != pos) {
-        idx++;
-        prev = cur;
-        cur = cur->next_node;
-    };
-
-    // if you want to insert to the begining
-    if (prev == NULL) {
-        ln->next_node = cur;
-        g->nodes = ln;
-        return;
+/*
+* Finds the node specified by the name and deletes it
+*/
+void delete_node(Graph *g, Node *n) {
+    int i = 0;
+    while (i < g->used && g->nodes[i] != n) {
+        remove_neighbour(g->nodes[i], n);
+        i++;
     }
-
-    // if you want to insert to the end
-    if (cur == NULL) {
-        prev->next_node = ln;
+    // we did not find it
+    if (i == g->used)
         return;
-    }
 
-    // if you want to insert to the middle
-    prev->next_node = ln;
-    ln->next_node = cur;
+    free_node(g->nodes[i]);
+    // shift following elements left
+    for (int j = i; j < g->used - 1; j++) {
+        g->nodes[j] = g->nodes[j + 1];
+        remove_neighbour(g->nodes[j], n);
+    }
+    g->used -= 1;
+    if (g->used < g->capacity - 10) {
+        g->nodes = realloc(g->nodes, g->capacity - 10);
+        check_malloc(g->nodes);
+        g->capacity -= 10;
+    }
 }
 
 /*
@@ -68,25 +66,25 @@ void add_node_at(int pos, Graph *g, Node *n) {
 Graph *init_graph(void) {
     Graph *g = (Graph *)malloc(sizeof(Graph));
     check_malloc(g);
-    g->nodes = NULL;
-
+    g->nodes = (Node **)malloc(10 * sizeof(Node *));
+    if (g->nodes == NULL) {
+        free(g);
+        print_error("Failed to allocate memory");
+        exit(EXIT_FAILURE);
+    }
+    g->used = 0;
+    g->capacity = 10;
     return g;
-}
-
-void free_graph_node(ListNode *list_node) {
-    if (list_node == NULL)
-        return;
-
-    free_graph_node(list_node->next_node);
-    free_node(list_node->node);
-    free(list_node);
 }
 
 /*
 * Frees the memory allocated by the graph
 */
 void free_graph(Graph *g) {
-    free_graph_node(g->nodes);
+    for (int i = 0; i < g->used; i++) {
+        free_node(g->nodes[i]);
+    }
+    free(g->nodes);
     free(g);
 }
 
@@ -94,17 +92,15 @@ void free_graph(Graph *g) {
 * Prints a graph to the console
 */
 void print_graph(const Graph *g) {
-    if (g->nodes == NULL) {
+    if (g->used == 0) {
         printf("There are no nodes in your graph\n");
         return;
     }
 
     printf("--- GRAPH ---\n");
-    ListNode *cur = g->nodes;
-    while (cur != NULL) {
-        print_node(cur->node);
-        cur = cur->next_node;
-        if (cur != NULL)
+    for (int i = 0; i < g->used; i++) {
+        print_node(g->nodes[i]);
+        if (i != g->used - 1)
             printf("---\n");
     }
 }
