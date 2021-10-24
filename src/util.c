@@ -1,5 +1,6 @@
 #include "util.h"
 #include <assert.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,7 +24,7 @@ void split(char *str, char *parts[], int num_of_splits, const char *sep) {
 */
 void check_malloc(void *ptr) {
     if (ptr == NULL) {
-        printf("ERROR: Failed to allocate memory\n");
+        print_error("Failed to allocate memory");
         exit(EXIT_FAILURE);
     }
 }
@@ -43,4 +44,18 @@ void remove_chars(char *str, char char_to_remove) {
             i--;
         }
     }
+}
+
+/*
+* Prints the message to the console in red and prefixis it with ERROR:
+*/
+__attribute__((format(printf, 1, 2))) void print_error(const char *format, ...) {
+    va_list arg;
+    va_start(arg, format);
+
+    printf("\033[0;31mERROR: ");
+    vprintf(format, arg);
+    printf("\n\033[0m");
+
+    va_end(arg);
 }

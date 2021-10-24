@@ -19,4 +19,9 @@ void check_malloc(void *ptr);
 */
 void remove_chars(char *str, char char_to_remove);
 
+/*
+* Prints the message to the console in red and prefixis it with ERROR:
+*/
+void print_error(const char *format, ...);
+
 #endif
