@@ -11,40 +11,14 @@
 */
 void add_neighbour_at(int pos, Node *n, Node *adjacent_node) {
     ListNode *neighbour = init_list_node(adjacent_node);
+    add_list_node_at(pos, &(n->neighbours), neighbour);
+}
 
-    // if neighbour list is empty
-    if (n->neighbours == NULL) {
-        n->neighbours = neighbour;
-        return;
-    }
-
-    int idx = 0;
-    ListNode *prev = NULL;
-    ListNode *cur = n->neighbours;
-
-    // walk through list until pos or end is reached
-    while (cur != NULL && idx != pos) {
-        idx++;
-        prev = cur;
-        cur = cur->next_node;
-    };
-
-    // if you want to insert to the begining
-    if (prev == NULL) {
-        neighbour->next_node = cur;
-        n->neighbours = neighbour;
-        return;
-    }
-
-    // if you want to insert to the end
-    if (cur == NULL) {
-        prev->next_node = neighbour;
-        return;
-    }
-
-    // if you want to insert to the middle
-    prev->next_node = neighbour;
-    neighbour->next_node = cur;
+/*
+* Removes the neighbour from the specified node
+*/
+void remove_neighbour(Node *n, Node *neighbour) {
+    delete_list_node(&(n->neighbours), neighbour);
 }
 
 /*

@@ -17,6 +17,11 @@ typedef struct Node {
 void add_neighbour_at(int pos, Node *n, Node *adjacent_node);
 
 /*
+* Removes the neighbour from the specified node
+*/
+void remove_neighbour(Node *n, Node *neighbour);
+
+/*
 * Instantiates a new node
 */
 Node *init_node(const char *name, Coordinates coords);
