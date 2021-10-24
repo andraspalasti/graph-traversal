@@ -15,7 +15,7 @@ void add_list_node_at(int pos, ListNode **head, ListNode *ln) {
 
     int idx = 0;
     ListNode *prev = NULL;
-    ListNode *cur = (*head)->next_node;
+    ListNode *cur = (*head);
 
     // walk through list until pos or end is reached
     while (cur != NULL && idx != pos) {
@@ -27,7 +27,7 @@ void add_list_node_at(int pos, ListNode **head, ListNode *ln) {
     // if you want to insert to the begining
     if (prev == NULL) {
         ln->next_node = cur;
-        (*head)->next_node = ln;
+        (*head) = ln;
         return;
     }
 
