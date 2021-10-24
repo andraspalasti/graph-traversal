@@ -30,6 +30,7 @@ void add_node(Graph *g, Node *n) {
         g->capacity += 10;
     }
     g->nodes[g->used] = n;
+    n->idx = g->used;
     g->used += 1;
 }
 
@@ -50,6 +51,7 @@ void delete_node(Graph *g, Node *n) {
     // shift following elements left
     for (int j = i; j < g->used - 1; j++) {
         g->nodes[j] = g->nodes[j + 1];
+        g->nodes[j]->idx -= 1;
         remove_neighbour(g->nodes[j], n);
     }
     g->used -= 1;

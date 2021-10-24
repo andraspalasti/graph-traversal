@@ -35,9 +35,9 @@ Node *init_node(const char *name, Coordinates coords) {
         exit(EXIT_FAILURE);
     }
 
+    n->idx = -1;
     n->coords = coords;
     n->neighbours = NULL;
-
     return n;
 }
 
@@ -54,6 +54,8 @@ void free_node(Node *n) {
 * Prints a node to the console
 */
 void print_node(const Node *n) {
+    if (n->idx != -1)
+        printf("idx: %d, ", n->idx);
     printf("name: %s, coords: ", n->name);
     print_coords(n->coords);
 
