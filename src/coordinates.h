@@ -10,4 +10,9 @@ typedef struct Coordinates {
 */
 void print_coords(Coordinates coords);
 
+/*
+* Returns the distance between the specified coordinates
+*/
+double distance(Coordinates a, Coordinates b);
+
 #endif
