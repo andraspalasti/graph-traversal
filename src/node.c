@@ -31,7 +31,7 @@ Node *init_node(const char *name, Coordinates coords) {
     n->name = strdup(name);
     if (n->name == NULL) {
         free(n);
-        printf("Failed to allocate memory!\n");
+        print_error("Failed to allocate memory");
         exit(EXIT_FAILURE);
     }
 

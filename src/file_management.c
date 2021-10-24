@@ -43,22 +43,22 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
         split(line, parts, 3, ";");
 
         if (parts[0] == NULL) {
-            printf("Badly formatted line on line number: %d", line_num);
+            print_error("Line is missing name (line number: %d)", line_num);
             exit(EXIT_FAILURE);
         }
 
         if (parts[1] == NULL || sscanf(parts[1], "%d", &x) != 1) {
-            printf("Badly formatted line on line number: %d", line_num);
+            print_error("Line is missing x coordinate (line number: %d)", line_num);
             exit(EXIT_FAILURE);
         }
 
         if (parts[2] == NULL || sscanf(parts[2], "%d", &y) != 1) {
-            printf("Badly formatted line on line number: %d", line_num);
+            print_error("Line is missing y coordinate (line number: %d)", line_num);
             exit(EXIT_FAILURE);
         }
 
         Node *n = init_node(parts[0], (Coordinates){.x = x, .y = y});
-        add_node_at(-1, g, n);
+        add_node(g, n);
 
         line_num++;
     }
@@ -78,7 +78,7 @@ void read_edges_from_csv(FILE *fp, Graph *g) {
         split(line, parts, 4, ";");
 
         if (parts[0] == NULL) {
-            printf("Badly formatted line on line number: %d", line_num);
+            print_error("Line is missing name (line number: %d)", line_num);
             exit(EXIT_FAILURE);
         }
 
