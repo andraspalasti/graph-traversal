@@ -9,6 +9,16 @@ typedef struct ListNode {
 } ListNode;
 
 /*
+* Adds a list node to the head at the specified position
+*/
+void add_list_node_at(int pos, ListNode **head, ListNode *ln);
+
+/*
+* Delete the node from the list node
+*/
+void delete_list_node(ListNode **head, struct Node *n);
+
+/*
 * Instantiates a new list_node
 */
 ListNode *init_list_node(struct Node *n);
