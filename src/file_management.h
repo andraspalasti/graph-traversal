@@ -1,5 +1,5 @@
-#ifndef FILE_MANAGEMENT_H_
-#define FILE_MANAGEMENT_H_
+#ifndef FILE_MANAGEMENT_H
+#define FILE_MANAGEMENT_H
 
 #include "graph.h"
 #include <stdio.h>

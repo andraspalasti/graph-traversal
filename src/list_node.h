@@ -1,5 +1,5 @@
-#ifndef list_node_H_
-#define list_node_H_
+#ifndef LIST_NODE_H
+#define LIST_NODE_H
 
 #include "node.h"
 

@@ -1,5 +1,5 @@
-#ifndef PATH_FINDING_H_
-#define PATH_FINDING_H_
+#ifndef PATH_FINDING_H
+#define PATH_FINDING_H
 
 #include "graph.h"
 

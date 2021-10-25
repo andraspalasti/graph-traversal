@@ -1,5 +1,5 @@
-#ifndef COORDINATES_H_
-#define COORDINATES_H_
+#ifndef COORDINATES_H
+#define COORDINATES_H
 
 typedef struct Coordinates {
     int x, y;
