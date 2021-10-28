@@ -1,6 +1,8 @@
 #include "file_management.h"
 #include "graph.h"
 #include "util.h"
+#include "visualization.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,9 +53,17 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
             print_error("Line is missing x coordinate (line number: %d)", line_num);
             exit(EXIT_FAILURE);
         }
+        if (fabs(x) > MAX_X_COORD) {
+            print_error("X coordinate should be between %d and %d (line number: %d)", MAX_X_COORD, -MAX_X_COORD, line_num);
+            exit(EXIT_FAILURE);
+        }
 
         if (parts[2] == NULL || sscanf(parts[2], "%lf", &y) != 1) {
             print_error("Line is missing y coordinate (line number: %d)", line_num);
+            exit(EXIT_FAILURE);
+        }
+        if (fabs(y) > MAX_Y_COORD) {
+            print_error("Y coordinate should be between %d and %d (line number: %d)", MAX_Y_COORD, -MAX_Y_COORD, line_num);
             exit(EXIT_FAILURE);
         }
 
