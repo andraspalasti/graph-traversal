@@ -9,11 +9,7 @@ Path *find_path(Graph *g, Node *src, Node *target) {
     double *dist = (double *)malloc(g->used * sizeof(double));
     check_malloc(dist);
     Node **prev = (Node **)malloc(g->used * sizeof(Node *));
-    if (prev == NULL) {
-        free(dist);
-        print_error("Failed to allocate memory");
-        exit(EXIT_FAILURE);
-    }
+    check_malloc(prev);
 
     // fill with default values
     for (int i = 0; i < g->used; i++) {

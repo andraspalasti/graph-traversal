@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void print_coords(Coordinates coords) {
-    printf("(%d, %d)\n", coords.x, coords.y);
+    printf("(%g, %g)\n", coords.x, coords.y);
 }
 
 /*

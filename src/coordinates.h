@@ -2,7 +2,7 @@
 #define COORDINATES_H
 
 typedef struct Coordinates {
-    int x, y;
+    double x, y;
 } Coordinates;
 
 /*

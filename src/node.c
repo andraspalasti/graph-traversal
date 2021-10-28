@@ -22,6 +22,20 @@ void remove_neighbour(Node *n, Node *neighbour) {
 }
 
 /*
+* Checks if a is connected to b
+*/
+bool is_connected(const Node *a, const Node *b) {
+    ListNode *neighbour = a->neighbours;
+    while (neighbour != NULL) {
+        if (neighbour->node == b) {
+            return true;
+        }
+        neighbour = neighbour->next_node;
+    }
+    return false;
+}
+
+/*
 * Instantiates a new node
 */
 Node *init_node(const char *name, Coordinates coords) {

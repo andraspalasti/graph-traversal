@@ -16,7 +16,7 @@
 */
 void read_graph_from_csv(const char *fpath, Graph *g) {
     FILE *fp;
-    fp = fopen(fpath, "r");
+    fp = fopen(fpath, "rt");
     if (fp == NULL) {
         perror("fopen");
         exit(EXIT_FAILURE);
@@ -39,7 +39,7 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
 
     while (getline(&line, &len, fp) != EOF) {
         char *parts[3]; // part[0] name, part[1] x coord, part[2] y coord
-        int x = 0, y = 0;
+        double x = 0, y = 0;
         split(line, parts, 3, ";");
 
         if (parts[0] == NULL) {
@@ -47,12 +47,12 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
             exit(EXIT_FAILURE);
         }
 
-        if (parts[1] == NULL || sscanf(parts[1], "%d", &x) != 1) {
+        if (parts[1] == NULL || sscanf(parts[1], "%lf", &x) != 1) {
             print_error("Line is missing x coordinate (line number: %d)", line_num);
             exit(EXIT_FAILURE);
         }
 
-        if (parts[2] == NULL || sscanf(parts[2], "%d", &y) != 1) {
+        if (parts[2] == NULL || sscanf(parts[2], "%lf", &y) != 1) {
             print_error("Line is missing y coordinate (line number: %d)", line_num);
             exit(EXIT_FAILURE);
         }
