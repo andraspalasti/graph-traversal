@@ -11,7 +11,7 @@
 * WARNING: This function uses strtok so it modifies the original string
 */
 void split(char *str, char *parts[], int num_of_splits, const char *sep) {
-    // assert(num_of_splits > 0);
+    assert(num_of_splits > 0);
     parts[0] = strtok(str, sep);
     for (int i = 1; i < num_of_splits; i++) {
         parts[i] = strtok(NULL, sep);
