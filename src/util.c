@@ -5,11 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*
-* This function splits a string into a number of parts
-* and puts each part in the parts array
-* WARNING: This function uses strtok so it modifies the original string
-*/
+/**
+ * @brief The function splits the string by the separator into an array of pointers
+ * ATTENTION: this function modifies str
+ * 
+ * @param str
+ * @param parts
+ * @param num_of_splits 
+ * @param sep 
+ */
 void split(char *str, char *parts[], int num_of_splits, const char *sep) {
     assert(num_of_splits > 0);
     parts[0] = strtok(str, sep);
@@ -18,10 +22,11 @@ void split(char *str, char *parts[], int num_of_splits, const char *sep) {
     }
 }
 
-/*
-* Checks if the pointer is null
-* if it is than the program exits with an error message
-*/
+/**
+ * @brief if the ptr is null than prints an error message and exits
+ * 
+ * @param ptr 
+ */
 void check_malloc(void *ptr) {
     if (ptr == NULL) {
         print_error("Failed to allocate memory");
@@ -29,9 +34,12 @@ void check_malloc(void *ptr) {
     }
 }
 
-/*
-* Removes all occurences of a specified char in a string
-*/
+/**
+ * @brief Removes all occurences of the specified char in str
+ * 
+ * @param str 
+ * @param char_to_remove 
+ */
 void remove_chars(char *str, char char_to_remove) {
     int i, j;
     int len = strlen(str);
@@ -46,9 +54,10 @@ void remove_chars(char *str, char char_to_remove) {
     }
 }
 
-/*
-* Prints the message to the console in red and prefixis it with ERROR:
-*/
+/**
+ * @brief Prints the message to the console in red and prefixis it with ERROR:
+ * 
+ */
 __attribute__((format(printf, 1, 2))) void print_error(const char *format, ...) {
     va_list arg;
     va_start(arg, format);
