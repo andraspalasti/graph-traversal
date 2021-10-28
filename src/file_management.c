@@ -2,21 +2,20 @@
 #include "graph.h"
 #include "util.h"
 #include "visualization.h"
+#include <assert.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*
-* Reads a csv file into a graph
-* The csv should look like this:
-* AA;10;10;"OA,FD"
-* OA;-678;-166;"AA"
-* FD;31;392;"AA"
-* ----
-* Explanation: name;x coord;y coord;"adjacent nodes"
-*/
+/**
+ * @brief Reads a csv file into a graph
+ * 
+ * @param fpath path of csv file
+ * @param g 
+ */
 void read_graph_from_csv(const char *fpath, Graph *g) {
+    assert(strstr(fpath, ".csv") != NULL);
     FILE *fp;
     fp = fopen(fpath, "rt");
     if (fp == NULL) {
@@ -31,9 +30,12 @@ void read_graph_from_csv(const char *fpath, Graph *g) {
     fclose(fp);
 }
 
-/*
-* Reads the nodes from a csv into a graph
-*/
+/**
+ * @brief Reads the nodes from file
+ * 
+ * @param fp 
+ * @param g 
+ */
 void read_nodes_from_csv(FILE *fp, Graph *g) {
     int line_num = 1;
     char *line = NULL;
@@ -75,9 +77,12 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
     free(line);
 }
 
-/*
-* Reads the edges from a csv into a graph
-*/
+/**
+ * @brief Reads the edges from file
+ * 
+ * @param fp 
+ * @param g 
+ */
 void read_edges_from_csv(FILE *fp, Graph *g) {
     int line_num = 1;
     char *line = NULL;

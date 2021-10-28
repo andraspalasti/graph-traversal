@@ -4,11 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*
-* Finds the node specified by the name
-* if found returns a pointer to the node
-* else it returns a null pointer
-*/
+/**
+ * @brief Searches for the specified node by name
+ * 
+ * @param g 
+ * @param name 
+ * @return Node* returns null pointer if it can not find node
+ */
 Node *find_node(const Graph *g, const char *name) {
     for (int i = 0; i < g->used; i++) {
         if (strcmp(g->nodes[i]->name, name) == 0) {
@@ -18,10 +20,14 @@ Node *find_node(const Graph *g, const char *name) {
     return NULL;
 }
 
-/*
-* Adds a node to the graph
-* It inserts the node to the end
-*/
+/**
+ * @brief Adds node to the end of the graph.
+ * It has a side effect:
+ * it sets the node's idx field to the corresponding index
+ * 
+ * @param g Graph
+ * @param n Node to add to graph
+ */
 void add_node(Graph *g, Node *n) {
     // the allocated array is full
     if (g->used == g->capacity) {
@@ -34,9 +40,13 @@ void add_node(Graph *g, Node *n) {
     g->used += 1;
 }
 
-/*
-* Finds the node specified by the name and deletes it
-*/
+/**
+ * @brief Deletes the specified node from the graph.
+ * It also deletes all connections to this node
+ * 
+ * @param g Graph
+ * @param n Node to delete
+ */
 void delete_node(Graph *g, Node *n) {
     int i = 0;
     while (i < g->used && g->nodes[i] != n) {
@@ -62,9 +72,13 @@ void delete_node(Graph *g, Node *n) {
     }
 }
 
-/*
-* Instantiates a new graph
-*/
+/**
+ * @brief Instantiates a graph.
+ * This allocates memory on the heap, 
+ * you need to free this with the free_graph function
+ * 
+ * @return Graph* pointer to the allocated graph
+ */
 Graph *init_graph(void) {
     Graph *g = (Graph *)malloc(sizeof(Graph));
     check_malloc(g);
@@ -79,9 +93,12 @@ Graph *init_graph(void) {
     return g;
 }
 
-/*
-* Frees the memory allocated by the graph
-*/
+/**
+ * @brief Frees the memory allocated by the graph
+ * and all of it's nodes
+ * 
+ * @param g pointer to the graph
+ */
 void free_graph(Graph *g) {
     for (int i = 0; i < g->used; i++) {
         free_node(g->nodes[i]);
@@ -90,9 +107,11 @@ void free_graph(Graph *g) {
     free(g);
 }
 
-/*
-* Prints a graph to the console
-*/
+/**
+ * @brief Prints the graph to the console
+ * 
+ * @param g pointer to the graph
+ */
 void print_graph(const Graph *g) {
     if (g->used == 0) {
         printf("There are no nodes in your graph\n");
