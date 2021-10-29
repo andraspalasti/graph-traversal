@@ -10,9 +10,9 @@ typedef struct Graph {
 
 Node *find_node(const Graph *g, const char *name);
 
-void add_node(Graph *g, Node *n);
+void add_node_to_graph(Graph *g, Node *n);
 
-void delete_node(Graph *g, Node *n);
+void delete_node_from_graph(Graph *g, Node *n);
 
 Graph *init_graph(void);
 

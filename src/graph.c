@@ -7,8 +7,8 @@
 /**
  * @brief Searches for the specified node by name
  * 
- * @param g 
- * @param name 
+ * @param g The graph to search in
+ * @param name The node's name to search for
  * @return Node* returns null pointer if it can not find node
  */
 Node *find_node(const Graph *g, const char *name) {
@@ -28,7 +28,7 @@ Node *find_node(const Graph *g, const char *name) {
  * @param g Graph
  * @param n Node to add to graph
  */
-void add_node(Graph *g, Node *n) {
+void add_node_to_graph(Graph *g, Node *n) {
     // the allocated array is full
     if (g->used == g->capacity) {
         g->nodes = realloc(g->nodes, g->capacity + 10);
@@ -47,7 +47,7 @@ void add_node(Graph *g, Node *n) {
  * @param g Graph
  * @param n Node to delete
  */
-void delete_node(Graph *g, Node *n) {
+void delete_node_from_graph(Graph *g, Node *n) {
     int i = 0;
     while (i < g->used && g->nodes[i] != n) {
         remove_neighbour(g->nodes[i], n);

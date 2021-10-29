@@ -5,25 +5,35 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*
-* Adds a neighbour to the node at the specified position
-* @param pos starts at 0, you can insert to the end with pos = -1
-*/
+/**
+ * @brief Adds a neighbour to the node at the specified position
+ * 
+ * @param pos Specifies where to add neighbour if it is -1 it will add it to the end
+ * @param n Node to add neighbour to
+ * @param adjacent_node Neighbour to add
+ */
 void add_neighbour_at(int pos, Node *n, Node *adjacent_node) {
-    ListNode *neighbour = init_list_node(adjacent_node);
-    add_list_node_at(pos, &(n->neighbours), neighbour);
+    add_node_at(pos, &(n->neighbours), adjacent_node);
 }
 
-/*
-* Removes the neighbour from the specified node
-*/
+/**
+ * @brief Adds a neighbour to the node at the specified position
+ * 
+ * @param n Node to remove neighbour from
+ * @param neighbour the neighbour node to remove
+ */
 void remove_neighbour(Node *n, Node *neighbour) {
-    delete_list_node(&(n->neighbours), neighbour);
+    delete_node(&(n->neighbours), neighbour);
 }
 
-/*
-* Checks if a is connected to b
-*/
+/**
+ * @brief Checks if a Node has a connection to b Node
+ * 
+ * @param a
+ * @param b 
+ * @return true 
+ * @return false 
+ */
 bool is_connected(const Node *a, const Node *b) {
     ListNode *neighbour = a->neighbours;
     while (neighbour != NULL) {
@@ -35,9 +45,13 @@ bool is_connected(const Node *a, const Node *b) {
     return false;
 }
 
-/*
-* Instantiates a new node
-*/
+/**
+ * @brief Instantiates a new node
+ * 
+ * @param name The node name to instantiate with
+ * @param coords 
+ * @return Node* 
+ */
 Node *init_node(const char *name, Coordinates coords) {
     Node *n = (Node *)malloc(sizeof(Node));
     check_malloc(n);
@@ -55,18 +69,22 @@ Node *init_node(const char *name, Coordinates coords) {
     return n;
 }
 
-/*
-* Frees the memory allocated by the node
-*/
+/**
+ * @brief Frees the memory allocated by the node
+ * 
+ * @param n 
+ */
 void free_node(Node *n) {
     free_list_node(n->neighbours);
     free(n->name);
     free(n);
 }
 
-/*
-* Prints a node to the console
-*/
+/**
+ * @brief Prints the node to the console in a nice formatted way
+ * 
+ * @param n Node to print
+ */
 void print_node(const Node *n) {
     if (n->idx != -1)
         printf("idx: %d, ", n->idx);

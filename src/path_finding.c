@@ -4,10 +4,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief It finds the possible shortest path between src and target
+ * 
+ * @param g
+ * @param src Start node
+ * @param target Destination node
+ * @return Path* If there is no path between the nodes than it returns a NULL pointer
+ */
 Path *find_path(Graph *g, Node *src, Node *target) {
     Queue *q = NULL;
+
+    // in this array we will store the shortest distance from the src node
+    // to the node with the corresponding index
     double *dist = (double *)malloc(g->used * sizeof(double));
     check_malloc(dist);
+
+    // in this array we will store the shortest route that is
+    // needed to take to the src node
     Node **prev = (Node **)malloc(g->used * sizeof(Node *));
     check_malloc(prev);
 
@@ -18,7 +32,7 @@ Path *find_path(Graph *g, Node *src, Node *target) {
         else
             dist[i] = INFINITY;
         prev[i] = NULL;
-        enqueue(0, &q, init_queue(g->nodes[i]));
+        enqueue(&q, g->nodes[i]);
     }
 
     Path *p = NULL;
@@ -27,7 +41,11 @@ Path *find_path(Graph *g, Node *src, Node *target) {
         remove_from_queue(&q, n);
 
         if (prev[n->idx] != NULL && n == target) {
-            load_path(&p, prev, n);
+            Node *cur = n;
+            while (cur != NULL) {
+                add_node_at(0, &p, cur);
+                cur = prev[cur->idx];
+            }
             break;
         }
 
@@ -48,19 +66,20 @@ Path *find_path(Graph *g, Node *src, Node *target) {
     return p;
 }
 
-void load_path(Path **p, Node **prev, Node *end) {
-    Node *cur = end;
-    while (cur != NULL) {
-        ListNode *ln = init_list_node(cur);
-        add_list_node_at(0, p, ln);
-        cur = prev[cur->idx];
-    }
-}
-
+/**
+ * @brief Frees the memory allocated by the Path
+ * 
+ * @param p The Path to free
+ */
 void free_path(Path *p) {
     free_list_node(p);
 }
 
+/**
+ * @brief Prints the path to the console in a nicely formatted way
+ * 
+ * @param p The Path to free
+ */
 void print_path(Path *p) {
     Path *cur = p;
     while (cur != NULL) {
@@ -73,6 +92,14 @@ void print_path(Path *p) {
     printf("\n");
 }
 
+/**
+ * @brief Returns a pointer to the node from the Queue that has the
+ * least amount of distance in the dist array
+ * 
+ * @param q 
+ * @param dist An array that stores the distance for each node
+ * @return Node* 
+ */
 Node *min_dist_node(Queue *q, const double *dist) {
     if (q == NULL)
         return NULL;
@@ -89,18 +116,33 @@ Node *min_dist_node(Queue *q, const double *dist) {
     return min;
 }
 
-void enqueue(int pos, Queue **head, Queue *q) {
-    add_list_node_at(pos, head, q);
+/**
+ * @brief Adds the Node to the Queue
+ * 
+ * @param head The Queue to add the node to
+ * @param n Node to add
+ */
+void enqueue(Queue **head, Node *n) {
+    // insertion is the fastest when pos=0
+    // and the order does not matter to us so its ok
+    add_node_at(0, head, n);
 }
 
+/**
+ * @brief Removes the specified Node from the Queue
+ * 
+ * @param q The Queue to remove the Node from
+ * @param n The node to remove from the Queue
+ */
 void remove_from_queue(Queue **q, Node *n) {
-    delete_list_node(q, n);
+    delete_node(q, n);
 }
 
-Queue *init_queue(Node *n) {
-    return init_list_node(n);
-}
-
+/**
+ * @brief Frees the memory allocated by the queue
+ * 
+ * @param q 
+ */
 void free_queue(Queue *q) {
     free_list_node(q);
 }

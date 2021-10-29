@@ -70,7 +70,7 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
         }
 
         Node *n = init_node(parts[0], (Coordinates){.x = x, .y = y});
-        add_node(g, n);
+        add_node_to_graph(g, n);
 
         line_num++;
     }

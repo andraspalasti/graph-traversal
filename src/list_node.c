@@ -3,10 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*
-* Adds a list node to the head at the specified position
-*/
-void add_list_node_at(int pos, ListNode **head, ListNode *ln) {
+/**
+ * @brief Adds a node to the ListNode at the specified position
+ * 
+ * @param pos Specifies where to add node if it is -1 it will add it to the end
+ * @param head Pointer to the leading ListNode
+ * @param node The node to add
+ */
+void add_node_at(int pos, ListNode **head, Node *n) {
+    ListNode *ln = init_list_node(n);
+
     // if head is empty
     if (*head == NULL) {
         *head = ln;
@@ -42,10 +48,13 @@ void add_list_node_at(int pos, ListNode **head, ListNode *ln) {
     ln->next_node = cur;
 }
 
-/*
-* Delete the node from the list node
-*/
-void delete_list_node(ListNode **head, struct Node *n) {
+/**
+ * @brief Delete the node from the ListNodes
+ * 
+ * @param head Pointer to the leading ListNode
+ * @param n Node to delete
+ */
+void delete_node(ListNode **head, struct Node *n) {
     ListNode *prev_ln = NULL;
     ListNode *cur_ln = *head;
 
@@ -76,9 +85,12 @@ void delete_list_node(ListNode **head, struct Node *n) {
     free(cur_ln);
 }
 
-/*
-* Instantiates a new list_node
-*/
+/**
+ * @brief Instantiates a new list_node
+ * 
+ * @param n Node to store
+ * @return ListNode* Pointer to the created ListNode
+ */
 ListNode *init_list_node(struct Node *n) {
     ListNode *list_node = (ListNode *)malloc(sizeof(ListNode));
     check_malloc(list_node);
@@ -87,10 +99,12 @@ ListNode *init_list_node(struct Node *n) {
     return list_node;
 }
 
-/*
-* Frees the memory allocated by the list_node
-* !!!Attention this does not free the node field
-*/
+/**
+ * @brief Frees the memory allocated by the ListNode
+ * ATTENTION: It does not free the nodes that are stored in it
+ * 
+ * @param list_node The ListNode to free
+ */
 void free_list_node(ListNode *list_node) {
     if (list_node == NULL)
         return;
@@ -99,9 +113,11 @@ void free_list_node(ListNode *list_node) {
     free(list_node);
 }
 
-/*
-* Prints the list_nodes to the console
-*/
+/**
+ * @brief Prints the ListNode in a nice formatted way to the console
+ * 
+ * @param list_node The ListNode to print
+ */
 void print_list_node(const ListNode *list_node) {
     printf("[");
     while (list_node != NULL) {
