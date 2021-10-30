@@ -9,7 +9,7 @@ CC = clang
 CFLAGS =  -Wall -Wextra -Wpedantic -std=c99 \
           -Wformat=2 -Wno-unused-parameter -Wshadow \
           -Wwrite-strings -Wstrict-prototypes -Wold-style-definition \
-          -Wredundant-decls -Wnested-externs -Wmissing-include-dirs
+          -Wredundant-decls -Wnested-externs -Wmissing-include-dirs $(shell pkg-config --libs --cflags sdl2_gfx SDL2_ttf)
 
 all: $(TARGET)
 
