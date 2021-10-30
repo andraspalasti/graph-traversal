@@ -1,15 +1,12 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <SDL.h>
-#include <SDL_ttf.h>
-
 #define RESET "\033[0m"
 #define BOLDRED "\033[1m\033[31m"
 
-void sdl_init(int width, int height, SDL_Window **pwindow, SDL_Renderer **prenderer);
+void **init_matrix(int rows, int cols, size_t size);
 
-TTF_Font *ttf_init(const char *ttf_file, int font_size);
+void free_matrix(void **matrix);
 
 void split(char *str, char *parts[], int num_of_splits, const char *sep);
 

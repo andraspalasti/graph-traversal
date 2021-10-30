@@ -8,59 +8,33 @@
 #include <string.h>
 
 /**
- * @brief Instantiates a new SDL window and renderer 
- * and checks for errors
+ * @brief Instantiates a matrix with the specified size
+ * and the specified number of rows and columns
+ * ATTENTION: Only free this with free_matrix
  * 
- * @param width Width of window
- * @param height Height of window
- * @param pwindow 
- * @param prenderer 
+ * @param rows Number of rows
+ * @param cols Number of columns
+ * @param size Size of 1 memory cell
+ * @return void** 
  */
-void sdl_init(int width, int height, SDL_Window **pwindow, SDL_Renderer **prenderer) {
-    assert(width > 0 && height > 0);
-    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        print_error("Could not start SDL: %s", SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
-
-    // maybe we need to extract the title into a variable or a param
-    SDL_Window *window = SDL_CreateWindow("Graph Traversal",
-                                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_ALLOW_HIGHDPI);
-    if (window == NULL) {
-        print_error("Could not create window: %s", SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
-
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-    if (renderer == NULL) {
-        print_error("Could not create renderer: %s", SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-    SDL_RenderClear(renderer);
-
-    *pwindow = window;
-    *prenderer = renderer;
+void **init_matrix(int rows, int cols, size_t size) {
+    assert(rows > 0 && cols > 0);
+    void **matrix = malloc(rows * sizeof(void *));
+    matrix[0] = malloc(rows * cols * size);
+    for (int i = 1; i < rows; i++)
+        matrix[i] = matrix[0] + i * cols;
+    return matrix;
 }
 
 /**
- * @brief Opens the specified font file and 
- * instantiates a new TTF_Font with the specified font size
+ * @brief Frees the specified matrix allocated by init_matrix
+ * ATTENTION: Only use this on matrixes that have been allocated by init_matrix
  * 
- * @param ttf_file Path to font file
- * @param font_size
- * @return TTF_Font* 
+ * @param matrix 
  */
-TTF_Font *ttf_init(const char *ttf_file, int font_size) {
-    TTF_Init();
-    TTF_Font *font = TTF_OpenFont(ttf_file, font_size);
-    if (!font) {
-        print_error("Could not open font: %s", TTF_GetError());
-        exit(EXIT_FAILURE);
-    }
-    return font;
+void free_matrix(void **matrix) {
+    free(matrix[0]);
+    free(matrix);
 }
 
 /**
