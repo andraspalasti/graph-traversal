@@ -1,12 +1,15 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <stdbool.h>
+#include <stdlib.h>
+
 #define RESET "\033[0m"
 #define BOLDRED "\033[1m\033[31m"
 
-void **init_matrix(int rows, int cols, size_t size);
+bool **init_bool_matrix(int rows, int cols);
 
-void free_matrix(void **matrix);
+void free_bool_matrix(bool **matrix);
 
 void split(char *str, char *parts[], int num_of_splits, const char *sep);
 

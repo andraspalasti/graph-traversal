@@ -3,26 +3,29 @@
 #include <SDL_ttf.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /**
- * @brief Instantiates a matrix with the specified size
- * and the specified number of rows and columns
- * ATTENTION: Only free this with free_matrix
+ * @brief Instantiates a matrix with the specified number of rows and columns
  * 
  * @param rows Number of rows
  * @param cols Number of columns
- * @param size Size of 1 memory cell
- * @return void** 
+ * @return bool** 
  */
-void **init_matrix(int rows, int cols, size_t size) {
+bool **init_bool_matrix(int rows, int cols) {
     assert(rows > 0 && cols > 0);
-    void **matrix = malloc(rows * sizeof(void *));
-    matrix[0] = malloc(rows * cols * size);
+
+    bool **matrix = malloc(rows * sizeof(bool *));
+    check_malloc(matrix);
+    matrix[0] = malloc(rows * cols * sizeof(bool));
+    check_malloc(matrix[0]);
+
     for (int i = 1; i < rows; i++)
         matrix[i] = matrix[0] + i * cols;
+
     return matrix;
 }
 
@@ -32,7 +35,7 @@ void **init_matrix(int rows, int cols, size_t size) {
  * 
  * @param matrix 
  */
-void free_matrix(void **matrix) {
+void free_bool_matrix(bool **matrix) {
     free(matrix[0]);
     free(matrix);
 }

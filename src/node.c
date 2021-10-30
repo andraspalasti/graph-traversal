@@ -29,10 +29,9 @@ void remove_neighbour(Node *n, Node *neighbour) {
 /**
  * @brief Checks if a Node has a connection to b Node
  * 
- * @param a
+ * @param a 
  * @param b 
- * @return true 
- * @return false 
+ * @return bool 
  */
 bool is_connected(const Node *a, const Node *b) {
     ListNode *neighbour = a->neighbours;
