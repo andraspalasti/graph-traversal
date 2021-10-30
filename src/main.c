@@ -8,16 +8,14 @@
 #include <stdlib.h>
 
 int main() {
-    // Graph *g = init_graph();
+    Graph *g = init_graph();
 
-    // print_graph(g);
+    read_graph_from_csv("test.csv", g);
+    print_graph(g);
 
-    // read_graph_from_csv("test.csv", g);
-    // // draw_graph("graph.svg", g);
-    // print_graph(g);
+    draw_graph(g);
 
-    // free_graph(g);
-    printf("MAX_X_COORD: %d", MAX_X_COORD);
+    free_graph(g);
 
     return 0;
 }

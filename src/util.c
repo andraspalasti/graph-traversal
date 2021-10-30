@@ -1,9 +1,67 @@
 #include "util.h"
+#include <SDL.h>
+#include <SDL_ttf.h>
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+/**
+ * @brief Instantiates a new SDL window and renderer 
+ * and checks for errors
+ * 
+ * @param width Width of window
+ * @param height Height of window
+ * @param pwindow 
+ * @param prenderer 
+ */
+void sdl_init(int width, int height, SDL_Window **pwindow, SDL_Renderer **prenderer) {
+    assert(width > 0 && height > 0);
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+        print_error("Could not start SDL: %s", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+
+    // maybe we need to extract the title into a variable or a param
+    SDL_Window *window = SDL_CreateWindow("Graph Traversal",
+                                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_ALLOW_HIGHDPI);
+    if (window == NULL) {
+        print_error("Could not create window: %s", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    if (renderer == NULL) {
+        print_error("Could not create renderer: %s", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+    SDL_RenderClear(renderer);
+
+    *pwindow = window;
+    *prenderer = renderer;
+}
+
+/**
+ * @brief Opens the specified font file and 
+ * instantiates a new TTF_Font with the specified font size
+ * 
+ * @param ttf_file Path to font file
+ * @param font_size
+ * @return TTF_Font* 
+ */
+TTF_Font *ttf_init(const char *ttf_file, int font_size) {
+    TTF_Init();
+    TTF_Font *font = TTF_OpenFont(ttf_file, font_size);
+    if (!font) {
+        print_error("Could not open font: %s", TTF_GetError());
+        exit(EXIT_FAILURE);
+    }
+    return font;
+}
 
 /**
  * @brief The function splits the string by the separator into an array of pointers
@@ -62,9 +120,9 @@ __attribute__((format(printf, 1, 2))) void print_error(const char *format, ...) 
     va_list arg;
     va_start(arg, format);
 
-    printf("\033[0;31mERROR: ");
+    printf(BOLDRED "ERROR: ");
     vprintf(format, arg);
-    printf("\n\033[0m");
+    printf(RESET);
 
     va_end(arg);
 }
