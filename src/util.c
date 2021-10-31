@@ -90,6 +90,33 @@ void remove_chars(char *str, char char_to_remove) {
 }
 
 /**
+ * @brief Trims whitespace front and back of string
+ * 
+ * @param str 
+ * @return char* Returns the trimmed substring
+ */
+char *trim(char *str) {
+    char *end;
+
+    // Trim leading space
+    while (isspace((unsigned char)*str))
+        str++;
+
+    if (*str == 0) // All spaces?
+        return str;
+
+    // Trim trailing space
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char)*end))
+        end--;
+
+    // Write new null terminator character
+    end[1] = '\0';
+
+    return str;
+}
+
+/**
  * @brief Prints the message to the console in red and prefixis it with ERROR:
  * 
  */

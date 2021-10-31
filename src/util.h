@@ -13,6 +13,8 @@ void free_bool_matrix(bool **matrix);
 
 void split(char *str, char *parts[], int num_of_splits, const char *sep);
 
+char *trim(char *str);
+
 void check_malloc(void *ptr);
 
 void remove_chars(char *str, char char_to_remove);

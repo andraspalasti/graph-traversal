@@ -100,7 +100,7 @@ void read_edges_from_csv(FILE *fp, Graph *g) {
         Node *n = find_node(g, parts[0]);
         if (n != NULL && parts[3] != NULL) {
             remove_chars(parts[3], '"');
-            remove_chars(parts[3], '\n');
+            trim(parts[3]);
             char *adjacent_node_name = strtok(parts[3], ",");
 
             while (adjacent_node_name != NULL) {
