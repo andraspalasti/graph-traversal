@@ -22,6 +22,7 @@ void draw_graph(Graph *g) {
         for (int j = 0; j < g->used; j++)
             adjacency_matrix[i][j] = false;
 
+    // draw edges first so they dont overlap nodes
     for (int i = 0; i < g->used; i++) {
         ListNode *neighbour = g->nodes[i]->neighbours;
         while (neighbour != NULL) {
@@ -41,6 +42,9 @@ void draw_graph(Graph *g) {
 
             neighbour = neighbour->next_node;
         }
+    }
+
+    for (int i = 0; i < g->used; i++) {
         draw_node(renderer, font, g->nodes[i]);
     }
 
@@ -67,7 +71,14 @@ void draw_graph(Graph *g) {
 void draw_line_between_nodes(SDL_Renderer *renderer, Node *n1, Node *n2) {
     Coordinates c1 = normalize_coords(n1->coords, SCREEN_WIDTH, SCREEN_HEIGHT);
     Coordinates c2 = normalize_coords(n2->coords, SCREEN_WIDTH, SCREEN_HEIGHT);
-    draw_line_between_coords(renderer, c1, c2, BLACK);
+
+    Coordinates sub = subtract(c2, c1);
+    double d = distance(c1, c2);
+    assert(d != 0); // we should not divide by zero
+
+    draw_line_between_coords(renderer,
+                             add(scale(NODE_RADIUS / d, sub), c1),
+                             add(scale((d - NODE_RADIUS) / d, sub), c1), BLACK);
 }
 
 /**
@@ -89,7 +100,7 @@ void draw_arrow_between_nodes(SDL_Renderer *renderer, Node *n1, Node *n2) {
     Coordinates arrow_head_width = scale((d - NODE_RADIUS - ARROW_HEAD_LENGTH + ARROW_HEAD_WIDTH / 2.0) / d, sub);
     Coordinates arrow_head_end = scale((d - NODE_RADIUS - ARROW_HEAD_LENGTH) / d, sub);
 
-    draw_line_between_coords(renderer, c1, arrow_head_start, BLACK);
+    draw_line_between_coords(renderer, add(scale(NODE_RADIUS / d, sub), c1), arrow_head_start, BLACK);
     draw_line_between_coords(renderer,
                              add(rotate_around(arrow_head_end, arrow_head_width, PI / 2), c1),
                              arrow_head_start, BLACK);
@@ -118,7 +129,7 @@ void draw_line_between_coords(SDL_Renderer *renderer, Coordinates c1, Coordinate
  */
 void draw_node(SDL_Renderer *renderer, TTF_Font *font, Node *n) {
     Coordinates pos = normalize_coords(n->coords, SCREEN_WIDTH, SCREEN_HEIGHT);
-    filledCircleColor(renderer, pos.x, pos.y, NODE_RADIUS, WHITE);
+    filledCircleColor(renderer, pos.x, pos.y, NODE_RADIUS, OPACITY_60_WHITE);
     aacircleColor(renderer, pos.x, pos.y, NODE_RADIUS, BLACK);
     render_text(renderer, font, BLACK, n->name, pos);
 }

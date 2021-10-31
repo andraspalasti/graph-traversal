@@ -6,7 +6,9 @@
 #include <SDL_ttf.h>
 #include <stdio.h>
 
+// COLORS
 #define WHITE 0xFFFFFFFF
+#define OPACITY_60_WHITE 0x99FFFFFF // white color with 60% opacity
 #define BLACK 0xFA000000
 
 #define SCREEN_HEIGHT 720
