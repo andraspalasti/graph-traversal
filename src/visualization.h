@@ -7,19 +7,22 @@
 #include <stdio.h>
 
 // COLORS
-#define WHITE 0xFFFFFFFF
-#define OPACITY_60_WHITE 0x99FFFFFF // white color with 60% opacity
-#define BLACK 0xFA000000
+#define BG_COLOR 0xFF342C28
+#define TEXT_COLOR 0xFF79C398
+#define EDGE_COLOR 0xFFEFAF61
+#define NODE_BORDER_COLOR 0xFF7BC0E5
+#define NODE_COLOR 0xAF342C28
 
 #define SCREEN_HEIGHT 720
 #define SCREEN_WIDTH 1280
 
 #define NODE_RADIUS 20
+#define MARGIN 10
 #define ARROW_HEAD_LENGTH 20
 #define ARROW_HEAD_WIDTH 10
 
-#define MAX_X_COORD (SCREEN_WIDTH - NODE_RADIUS) / 2
-#define MAX_Y_COORD (SCREEN_HEIGHT - NODE_RADIUS) / 2
+#define MAX_X_COORD (SCREEN_WIDTH - NODE_RADIUS - MARGIN) / 2
+#define MAX_Y_COORD (SCREEN_HEIGHT - NODE_RADIUS - MARGIN) / 2
 
 void draw_graph(Graph *g);
 

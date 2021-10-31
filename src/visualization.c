@@ -78,7 +78,7 @@ void draw_line_between_nodes(SDL_Renderer *renderer, Node *n1, Node *n2) {
 
     draw_line_between_coords(renderer,
                              add(scale(NODE_RADIUS / d, sub), c1),
-                             add(scale((d - NODE_RADIUS) / d, sub), c1), BLACK);
+                             add(scale((d - NODE_RADIUS) / d, sub), c1), EDGE_COLOR);
 }
 
 /**
@@ -100,13 +100,13 @@ void draw_arrow_between_nodes(SDL_Renderer *renderer, Node *n1, Node *n2) {
     Coordinates arrow_head_width = scale((d - NODE_RADIUS - ARROW_HEAD_LENGTH + ARROW_HEAD_WIDTH / 2.0) / d, sub);
     Coordinates arrow_head_end = scale((d - NODE_RADIUS - ARROW_HEAD_LENGTH) / d, sub);
 
-    draw_line_between_coords(renderer, add(scale(NODE_RADIUS / d, sub), c1), arrow_head_start, BLACK);
+    draw_line_between_coords(renderer, add(scale(NODE_RADIUS / d, sub), c1), arrow_head_start, EDGE_COLOR);
     draw_line_between_coords(renderer,
                              add(rotate_around(arrow_head_end, arrow_head_width, PI / 2), c1),
-                             arrow_head_start, BLACK);
+                             arrow_head_start, EDGE_COLOR);
     draw_line_between_coords(renderer,
                              add(rotate_around(arrow_head_end, arrow_head_width, -PI / 2), c1),
-                             arrow_head_start, BLACK);
+                             arrow_head_start, EDGE_COLOR);
 }
 
 /**
@@ -129,7 +129,7 @@ void draw_line_between_coords(SDL_Renderer *renderer, Coordinates c1, Coordinate
  */
 void draw_node(SDL_Renderer *renderer, TTF_Font *font, Node *n) {
     Coordinates pos = normalize_coords(n->coords, SCREEN_WIDTH, SCREEN_HEIGHT);
-    filledCircleColor(renderer, pos.x, pos.y, NODE_RADIUS, OPACITY_60_WHITE);
-    aacircleColor(renderer, pos.x, pos.y, NODE_RADIUS, BLACK);
-    render_text(renderer, font, BLACK, n->name, pos);
+    filledCircleColor(renderer, pos.x, pos.y, NODE_RADIUS, NODE_COLOR);
+    aacircleColor(renderer, pos.x, pos.y, NODE_RADIUS, NODE_BORDER_COLOR);
+    render_text(renderer, font, TEXT_COLOR, n->name, pos);
 }

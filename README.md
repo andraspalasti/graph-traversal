@@ -15,3 +15,5 @@ C;-20;-20
 ![Data structure](./data_structure.svg)
 
 This is going to be a directional graph
+
+## I have a bug when i read a file and there is whitespace at the end of the line the last edge doesnt get read in

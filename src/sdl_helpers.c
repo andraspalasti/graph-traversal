@@ -1,6 +1,7 @@
 #include "sdl_helpers.h"
 #include "coordinates.h"
 #include "util.h"
+#include "visualization.h"
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <assert.h>
@@ -35,7 +36,8 @@ void sdl_init(int width, int height, SDL_Window **pwindow, SDL_Renderer **prende
         print_error("Could not create renderer: %s", SDL_GetError());
         exit(EXIT_FAILURE);
     }
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_Color bg = hexcolor_to_sdl_color(BG_COLOR);
+    SDL_SetRenderDrawColor(renderer, bg.r, bg.g, bg.b, bg.a);
 
     SDL_RenderClear(renderer);
 
