@@ -55,8 +55,10 @@ Coordinates scale(double lambda, Coordinates coords) {
  */
 Coordinates rotate_around(Coordinates origin, Coordinates coords, double alpha) {
     Coordinates sub = subtract(coords, origin);
-    return (Coordinates){.x = sub.x * cos(alpha) - sub.y * sin(alpha) + origin.x,
-                         .y = sub.y * cos(alpha) + sub.x * sin(alpha) + origin.y};
+    double cos_a = cos(alpha);
+    double sin_a = sin(alpha);
+    return (Coordinates){.x = sub.x * cos_a - sub.y * sin_a + origin.x,
+                         .y = sub.y * cos_a + sub.x * sin_a + origin.y};
 }
 
 /**
