@@ -24,7 +24,8 @@ void sdl_init(int width, int height, SDL_Window **pwindow, SDL_Renderer **prende
 
     // maybe we need to extract the title into a variable or a param
     SDL_Window *window = SDL_CreateWindow("Graph Traversal",
-                                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+                                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
+                                          SDL_WINDOW_SHOWN);
     if (window == NULL) {
         print_error("Could not create window: %s", SDL_GetError());
         exit(EXIT_FAILURE);

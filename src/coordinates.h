@@ -21,4 +21,6 @@ Coordinates subtract(Coordinates c1, Coordinates c2);
 
 Coordinates add(Coordinates c1, Coordinates c2);
 
+double cubic_bezier(double x1, double x2, double t);
+
 #endif

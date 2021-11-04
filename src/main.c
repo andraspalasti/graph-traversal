@@ -13,7 +13,7 @@ int main() {
     read_graph_from_csv("test.csv", g);
     print_graph(g);
 
-    draw_graph(g);
+    display_graph(g);
 
     free_graph(g);
 
