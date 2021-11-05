@@ -8,6 +8,12 @@
 #include <assert.h>
 #include <stdbool.h>
 
+/**
+ * @brief Animates the drawing of the specified
+ * graph in an SDL window
+ * 
+ * @param g Graph to animate
+ */
 void display_graph(Graph *g) {
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -28,21 +34,34 @@ void display_graph(Graph *g) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT)
                 quit = true;
-            if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r)
+
+            // if the user presses 'r' then restart the animation
+            if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r) {
                 START = SDL_GetPerformanceCounter();
+                delta_time = 0;
+            }
         }
 
-        delta_time = (double)((SDL_GetPerformanceCounter() - START) * 1000 / (double)SDL_GetPerformanceFrequency());
+        // if animation is over dont waste resources on drawing the same thing
+        // rather check for input every 100ms
+        if (ANIM_DURATION > delta_time * 0.001) {
+            // update elapsed time
+            delta_time = (double)((SDL_GetPerformanceCounter() - START) * 1000 / (double)SDL_GetPerformanceFrequency());
 
-        SDL_SetRenderDrawColor(renderer, bg.r, bg.g, bg.b, bg.a);
-        SDL_RenderClear(renderer);
-        if (ANIM_DURATION > delta_time * 0.001)
-            draw_graph(renderer, font, g,
-                       cubic_bezier(0.8, 0.8, delta_time * 0.001 / ANIM_DURATION));
-        else
-            draw_graph(renderer, font, g, 1.0);
+            SDL_SetRenderDrawColor(renderer, bg.r, bg.g, bg.b, bg.a);
+            SDL_RenderClear(renderer);
 
-        SDL_RenderPresent(renderer);
+            // need to abstract this
+            if (ANIM_DURATION > delta_time * 0.001)
+                draw_graph(renderer, font, g,
+                           cubic_bezier(0.8, 0.8, delta_time * 0.001 / ANIM_DURATION));
+            else
+                draw_graph(renderer, font, g, 1.0);
+
+            SDL_RenderPresent(renderer);
+        } else {
+            SDL_Delay(100);
+        }
     }
 
     TTF_CloseFont(font);
