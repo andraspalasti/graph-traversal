@@ -13,7 +13,12 @@ int main() {
     read_graph_from_csv("test.csv", g);
     print_graph(g);
 
-    display_graph(g);
+    Node *a = find_node(g, "A");
+    Node *d = find_node(g, "D");
+    Path *p = find_path(g, d, a);
+    print_path(p);
+
+    display_graph_with_path(g, p);
 
     free_graph(g);
 
