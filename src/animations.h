@@ -20,4 +20,6 @@ void restart_animation(Animation *anim);
 
 void free_animation(Animation *anim);
 
+double cubic_bezier(double x1, double x2, double t);
+
 #endif

@@ -1,4 +1,5 @@
 #include "visualization.h"
+#include "animations.h"
 #include "coordinates.h"
 #include "draw.h"
 #include "path_finding.h"
