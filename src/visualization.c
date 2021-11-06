@@ -49,8 +49,17 @@ void display_graph(Graph *g) {
             SDL_SetRenderDrawColor(renderer, bg.r, bg.g, bg.b, bg.a);
             SDL_RenderClear(renderer);
 
-            draw_graph(renderer, font, g, NULL,
-                       anim->is_finished ? 1.0 : cubic_bezier(0.8, 0.8, anim->delta_time / anim->ANIM_DURATION));
+            // scale graph down
+            for (int i = 0; i < g->used; i++) {
+                g->nodes[i]->coords = scale(anim->delta_time / anim->ANIM_DURATION, g->nodes[i]->coords);
+            }
+
+            draw_graph(renderer, font, g, NULL);
+
+            // scale graph back to original size
+            for (int i = 0; i < g->used; i++) {
+                g->nodes[i]->coords = scale(anim->ANIM_DURATION / anim->delta_time, g->nodes[i]->coords);
+            }
 
             SDL_RenderPresent(renderer);
         } else {
@@ -108,29 +117,30 @@ void display_graph_with_path(Graph *g, Path *p) {
             SDL_SetRenderDrawColor(renderer, bg.r, bg.g, bg.b, bg.a);
             SDL_RenderClear(renderer);
 
-            draw_graph(renderer, font, g, p, 1.0);
+            draw_graph(renderer, font, g, p);
 
             // draw the paths that already finished animating
             for (Path *i = p; i != from; i = i->next_node) {
                 if (is_connected(i->next_node->node, i->node)) {
-                    draw_line_between_nodes(renderer, i->node->coords, i->next_node->node->coords, NODE_RADIUS, PATH_COLOR);
+                    draw_line_between_nodes(renderer, i->node, i->next_node->node, NODE_RADIUS, PATH_COLOR);
                 } else {
-                    draw_arrow_between_nodes(renderer, i->node->coords, i->next_node->node->coords, NODE_RADIUS, PATH_COLOR);
+                    draw_arrow_between_nodes(renderer, i->node, i->next_node->node, NODE_RADIUS, PATH_COLOR);
                 }
             }
 
             if (from != NULL && to != NULL) {
                 double scale_factor = anim->is_finished ? 1 : (anim->delta_time / anim->ANIM_DURATION);
+                Coordinates vector[2];
+                get_vector(vector, from->node, to->node, NODE_RADIUS);
+
                 if (is_connected(to->node, from->node)) {
-                    draw_line_between_nodes(renderer, from->node->coords,
-                                            add(scale(scale_factor, subtract(to->node->coords, from->node->coords)),
-                                                from->node->coords),
-                                            NODE_RADIUS, PATH_COLOR);
+                    draw_line(renderer, vector[0],
+                              add(scale(scale_factor, subtract(vector[1], vector[0])), vector[0]),
+                              PATH_COLOR);
                 } else {
-                    draw_arrow_between_nodes(renderer, from->node->coords,
-                                             add(scale(scale_factor, subtract(to->node->coords, from->node->coords)),
-                                                 from->node->coords),
-                                             NODE_RADIUS, PATH_COLOR);
+                    draw_arrow(renderer, vector[0],
+                               add(scale(scale_factor, subtract(vector[1], vector[0])), vector[0]),
+                               PATH_COLOR);
                 }
 
                 // restart animation and jump to next path to animate

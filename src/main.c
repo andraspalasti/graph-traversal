@@ -19,6 +19,7 @@ int main() {
     print_path(p);
 
     display_graph_with_path(g, p);
+    // display_graph(g);
 
     free_graph(g);
 
