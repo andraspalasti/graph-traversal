@@ -11,14 +11,15 @@ int main() {
     Graph *g = init_graph();
 
     read_graph_from_csv("test.csv", g);
-    print_graph(g);
+    save_graph_to_csv("./graph.csv", g);
+    // print_graph(g);
 
-    Node *a = find_node(g, "A");
-    Node *d = find_node(g, "D");
-    Path *p = find_path(g, d, a);
-    print_path(p);
+    // Node *a = find_node(g, "A");
+    // Node *d = find_node(g, "D");
+    // Path *p = find_path(g, d, a);
+    // print_path(p);
 
-    display_graph_with_path(g, p);
+    // display_graph_with_path(g, p);
     // display_graph(g);
 
     free_graph(g);

@@ -116,3 +116,31 @@ void read_edges_from_csv(FILE *fp, Graph *g) {
     }
     free(line);
 }
+
+/**
+ * @brief It saves a graph to a csv file
+ * the function exits if it failed to open the file
+ * 
+ * @param fpath The file to save to
+ * @param g The graph to save
+ */
+void save_graph_to_csv(const char *fpath, const Graph *g) {
+    FILE *fp;
+    fp = fopen(fpath, "wt");
+    if (fp == NULL) {
+        perror("fopen");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < g->used; i++) {
+        // print the node name, coords
+        fprintf(fp, "%s;%f;%f;", g->nodes[i]->name, g->nodes[i]->coords.x, g->nodes[i]->coords.x);
+
+        fprintf(fp, "\"");
+        // print the node neighbours
+        for (ListNode *neighbour = g->nodes[i]->neighbours; neighbour != NULL; neighbour = neighbour->next_node) {
+            fprintf(fp, "%s%s", neighbour->node->name, neighbour->next_node != NULL ? "," : "");
+        }
+        fprintf(fp, "\"\n");
+    }
+}
