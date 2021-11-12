@@ -4,9 +4,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define RESET "\033[0m"
-#define BOLDRED "\033[1m\033[31m"
-
 bool **init_bool_matrix(int rows, int cols);
 
 void free_bool_matrix(bool **matrix);

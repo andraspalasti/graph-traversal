@@ -1,4 +1,5 @@
 #include "util.h"
+#include "c-econio/econio.h"
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <assert.h>
@@ -124,9 +125,10 @@ __attribute__((format(printf, 1, 2))) void print_error(const char *format, ...) 
     va_list arg;
     va_start(arg, format);
 
-    printf(BOLDRED "ERROR: ");
+    econio_textcolor(COL_RED);
+    printf("ERROR: ");
     vprintf(format, arg);
-    printf(RESET);
+    econio_textcolor(COL_RESET);
 
     va_end(arg);
 }
