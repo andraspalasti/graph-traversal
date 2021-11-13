@@ -3,6 +3,7 @@
 #include "util.h"
 #include "visualization.h"
 #include <assert.h>
+#include <errno.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +20,7 @@ void read_graph_from_csv(const char *fpath, Graph *g) {
     FILE *fp;
     fp = fopen(fpath, "rt");
     if (fp == NULL) {
-        perror("fopen");
+        print_error("%s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 
@@ -125,16 +126,17 @@ void read_edges_from_csv(FILE *fp, Graph *g) {
  * @param g The graph to save
  */
 void save_graph_to_csv(const char *fpath, const Graph *g) {
+    assert(strstr(fpath, ".csv") != NULL);
     FILE *fp;
     fp = fopen(fpath, "wt");
     if (fp == NULL) {
-        perror("fopen");
+        print_error("%s\n", strerror(errno));
         exit(EXIT_FAILURE);
     }
 
     for (int i = 0; i < g->used; i++) {
         // print the node name, coords
-        fprintf(fp, "%s;%f;%f;", g->nodes[i]->name, g->nodes[i]->coords.x, g->nodes[i]->coords.x);
+        fprintf(fp, "%s;%f;%f;", g->nodes[i]->name, g->nodes[i]->coords.x, g->nodes[i]->coords.y);
 
         fprintf(fp, "\"");
         // print the node neighbours
@@ -143,4 +145,6 @@ void save_graph_to_csv(const char *fpath, const Graph *g) {
         }
         fprintf(fp, "\"\n");
     }
+
+    fclose(fp);
 }

@@ -1,5 +1,8 @@
 #include "console_menu.h"
 #include "econio.h"
+#include "file_management.h"
+#include "graph.h"
+#include "util.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -46,4 +49,67 @@ enum MenuState select_menu(const char *menu_items[]) {
     }
     econio_normalmode();
     return (enum MenuState)selected_action;
+}
+
+/**
+ * @brief It asks the user to type in a file path from
+ * which we can read the graph
+ * If we found the file we parse it and load the data into the graph
+ * 
+ * @param g The graph to load the file into
+ * @return enum MenuState The new menu state
+ */
+enum MenuState load_graph_menu(Graph *g) {
+    econio_clrscr();
+    char fpath[128 + 1];
+    printf("Type cancel to cancel action\n");
+    printf("What is the path of the file that you want to read from ? (the file path is at max 128 chars)\n");
+    scanf("%128s", fpath);
+    if (strcmp(fpath, "cancel") == 0) {
+        return IDLE;
+    }
+
+    if (strstr(fpath, ".csv") == NULL) {
+        print_error("The file has to be a csv file\n");
+        econio_sleep(TIME_TO_READ_MSG);
+        return LOAD_GRAPH;
+    } else {
+        int prev_len = g->used; // the number of nodes in graph before reading the file
+        read_graph_from_csv(fpath, g);
+        econio_textcolor(COL_GREEN);
+        printf("Successfully read %d nodes\n", g->used - prev_len);
+        econio_sleep(TIME_TO_READ_MSG);
+        econio_textcolor(COL_RESET);
+        return IDLE;
+    }
+}
+
+/**
+ * @brief Asks the user to specify the file path to save the graph to
+ * 
+ * @param g The graph to save
+ * @return enum MenuState The new menu state
+ */
+enum MenuState save_graph_menu(const Graph *g) {
+    econio_clrscr();
+    char fpath[128 + 1];
+    printf("Type cancel to cancel action\n");
+    printf("What is the path of the file that you want to save to ? (the file path is at max 128 chars)\n");
+    scanf("%128s", fpath);
+    if (strcmp(fpath, "cancel") == 0) {
+        return IDLE;
+    }
+
+    if (strstr(fpath, ".csv") == NULL) {
+        print_error("The file has to be a csv file\n");
+        econio_sleep(TIME_TO_READ_MSG);
+        return SAVE_GRAPH;
+    } else {
+        save_graph_to_csv(fpath, g);
+        econio_textcolor(COL_GREEN);
+        printf("Successfully saved graph to file: %s\n", fpath);
+        econio_sleep(TIME_TO_READ_MSG);
+        econio_textcolor(COL_RESET);
+        return IDLE;
+    }
 }

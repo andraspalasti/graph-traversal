@@ -5,6 +5,7 @@
 #include "graph.h"
 #include "node.h"
 #include "path_finding.h"
+#include "util.h"
 #include "visualization.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,6 +30,27 @@ int main() {
         switch (state) {
             case IDLE:
                 state = select_menu(menu_items);
+                break;
+
+            case LOAD_GRAPH:
+                state = load_graph_menu(g);
+                break;
+
+            case SAVE_GRAPH:
+                state = save_graph_menu(g);
+                break;
+
+            case DISPLAY_GRAPH:
+                if (g->used == 0) {
+                    printf("There are no nodes in your graph to display\n");
+                    econio_sleep(TIME_TO_READ_MSG);
+                    state = IDLE;
+                    break;
+                }
+                econio_clrscr();
+                printf("Close the SDL window to continue\n");
+                display_graph(g);
+                state = IDLE;
                 break;
 
             default:
