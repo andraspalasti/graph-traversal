@@ -1,6 +1,6 @@
-#include "./c-econio/econio.h"
 #include "console_menu.h"
 #include "coordinates.h"
+#include "econio.h"
 #include "file_management.h"
 #include "graph.h"
 #include "node.h"

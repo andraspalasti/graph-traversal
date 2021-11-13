@@ -1,5 +1,7 @@
 #include "console_menu.h"
-#include "./c-econio/econio.h"
+#include "econio.h"
+#include <stdio.h>
+#include <string.h>
 
 /**
  * @brief This function clears the console and draws the menu 
@@ -8,7 +10,7 @@
  * select one of the actions from the console and it returns
  * the selected menu state
  * 
- * @param menu_items Has to be an array of string that is terminated by "\0"
+ * @param menu_items Has to be an array of strings that is terminated by null terminator
  * @return enum MenuState The selected menu state
  */
 enum MenuState select_menu(const char *menu_items[]) {

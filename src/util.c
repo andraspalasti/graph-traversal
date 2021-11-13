@@ -1,5 +1,5 @@
 #include "util.h"
-#include "c-econio/econio.h"
+#include "econio.h"
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <assert.h>
