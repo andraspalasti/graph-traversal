@@ -97,8 +97,6 @@ void remove_chars(char *str, char char_to_remove) {
  * @return char* Returns the trimmed substring
  */
 char *trim(char *str) {
-    char *end;
-
     // Trim leading space
     while (isspace((unsigned char)*str))
         str++;
@@ -107,6 +105,7 @@ char *trim(char *str) {
         return str;
 
     // Trim trailing space
+    char *end;
     end = str + strlen(str) - 1;
     while (end > str && isspace((unsigned char)*end))
         end--;
@@ -115,6 +114,20 @@ char *trim(char *str) {
     end[1] = '\0';
 
     return str;
+}
+
+/**
+ * @brief Read in a string from the console
+ * and does not read more than the specified length
+ * 
+ * @param str The string to read into
+ * @param len The max number of chars to read it has to be between 0 and 256
+ */
+void read_str(char *str, int len) {
+    assert(0 < len && len < 256);
+    char format[6]; // contains the format like this "%255s"
+    sprintf(format, "%%%ds", len);
+    scanf(format, str);
 }
 
 /**

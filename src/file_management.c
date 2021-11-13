@@ -50,6 +50,9 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
         if (parts[0] == NULL) {
             print_error("Line is missing name (line number: %d)", line_num);
             exit(EXIT_FAILURE);
+        } else if (strlen(parts[0]) > NODE_NAME_LEN) {
+            print_error("The name of the node is too long at max it can be %d chars (line number: %d)", NODE_NAME_LEN, line_num);
+            exit(EXIT_FAILURE);
         }
 
         if (parts[1] == NULL || sscanf(parts[1], "%lf", &x) != 1) {
@@ -92,11 +95,6 @@ void read_edges_from_csv(FILE *fp, Graph *g) {
     while (getline(&line, &len, fp) != EOF) {
         char *parts[4]; // part[0] name, part[1] x coord, part[2] y coord, part[3] adjacent nodes
         split(line, parts, 4, ";");
-
-        if (parts[0] == NULL) {
-            print_error("Line is missing name (line number: %d)", line_num);
-            exit(EXIT_FAILURE);
-        }
 
         Node *n = find_node(g, parts[0]);
         if (n != NULL && parts[3] != NULL) {

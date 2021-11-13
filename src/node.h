@@ -5,9 +5,11 @@
 #include "list_node.h"
 #include <stdbool.h>
 
+#define NODE_NAME_LEN 20
+
 typedef struct Node {
     int idx; // default -1 but when we insert it into the graph it will be the index of its position in it
-    char *name;
+    char name[NODE_NAME_LEN + 1];
     Coordinates coords;
     struct ListNode *neighbours;
 } Node;

@@ -53,6 +53,44 @@ int main() {
                 state = IDLE;
                 break;
 
+            case DISPLAY_GRAPH_WITH_PATH:
+                econio_clrscr();
+
+                printf("Type in the node's name where the path should start from\n");
+
+                char node_name[NODE_NAME_LEN + 1];
+                read_str(node_name, NODE_NAME_LEN);
+                Node *from = find_node(g, node_name);
+                while (from == NULL) {
+                    print_error("Could not find the specified node in graph\n");
+                    read_str(node_name, NODE_NAME_LEN);
+                    from = find_node(g, node_name);
+                }
+
+                printf("Type in the node's name where the path should end\n");
+
+                read_str(node_name, NODE_NAME_LEN);
+                Node *to = find_node(g, node_name);
+                while (to == NULL) {
+                    print_error("Could not find the specified node in graph\n");
+                    read_str(node_name, NODE_NAME_LEN);
+                    to = find_node(g, node_name);
+                }
+
+                Path *p = find_path(g, from, to);
+                if (p == NULL) {
+                    print_error("There is no path between the specified nodes\n");
+                    econio_sleep(1);
+                    state = IDLE;
+                    break;
+                }
+
+                econio_clrscr();
+                printf("Close the SDL window to continue\n");
+                display_graph_with_path(g, p);
+                state = IDLE;
+                break;
+
             default:
                 state = QUIT;
                 break;

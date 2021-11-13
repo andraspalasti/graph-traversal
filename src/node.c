@@ -1,6 +1,7 @@
 #include "node.h"
 #include "list_node.h"
 #include "util.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,16 +53,11 @@ bool is_connected(const Node *a, const Node *b) {
  * @return Node* 
  */
 Node *init_node(const char *name, Coordinates coords) {
+    assert(strlen(name) <= NODE_NAME_LEN);
     Node *n = (Node *)malloc(sizeof(Node));
     check_malloc(n);
 
-    n->name = strdup(name);
-    if (n->name == NULL) {
-        free(n);
-        print_error("Failed to allocate memory");
-        exit(EXIT_FAILURE);
-    }
-
+    strcpy(n->name, name);
     n->idx = -1;
     n->coords = coords;
     n->neighbours = NULL;
@@ -75,7 +71,6 @@ Node *init_node(const char *name, Coordinates coords) {
  */
 void free_node(Node *n) {
     free_list_node(n->neighbours);
-    free(n->name);
     free(n);
 }
 
