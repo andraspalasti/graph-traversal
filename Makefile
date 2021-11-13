@@ -19,6 +19,9 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
 
+debug:
+	$(CC) -o $(TARGET) $(SRCS) $(CFLAGS) -g
+
 # create all object files
 $(OBJ)/%.o: $(SRC)/%.c
 	mkdir -p $(OBJ)
