@@ -36,9 +36,9 @@ enum MenuState select_menu(const char *menu_items[]) {
 
         int key = econio_getch();
         if (key == KEY_UP)
-            selected_action = selected_action == 0 ? selected_action : selected_action - 1;
+            selected_action = selected_action == 0 ? menu_length - 1 : selected_action - 1;
         else if (key == KEY_DOWN)
-            selected_action = selected_action == menu_length - 1 ? selected_action : selected_action + 1;
+            selected_action = selected_action == menu_length - 1 ? 0 : selected_action + 1;
         else if (key == KEY_ENTER)
             break;
         else if (key == KEY_ESCAPE) {
@@ -61,10 +61,10 @@ enum MenuState select_menu(const char *menu_items[]) {
  */
 enum MenuState load_graph_menu(Graph *g) {
     econio_clrscr();
-    char fpath[128 + 1];
     printf("Type cancel to cancel action\n");
     printf("What is the path of the file that you want to read from ? (the file path is at max 128 chars)\n");
-    scanf("%128s", fpath);
+    char fpath[128 + 1];
+    read_str(fpath, 128);
     if (strcmp(fpath, "cancel") == 0) {
         return IDLE;
     }
@@ -92,10 +92,10 @@ enum MenuState load_graph_menu(Graph *g) {
  */
 enum MenuState save_graph_menu(const Graph *g) {
     econio_clrscr();
-    char fpath[128 + 1];
     printf("Type cancel to cancel action\n");
     printf("What is the path of the file that you want to save to ? (the file path is at max 128 chars)\n");
-    scanf("%128s", fpath);
+    char fpath[128 + 1];
+    read_str(fpath, 128);
     if (strcmp(fpath, "cancel") == 0) {
         return IDLE;
     }
