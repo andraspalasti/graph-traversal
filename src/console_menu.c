@@ -2,6 +2,7 @@
 #include "econio.h"
 #include "file_management.h"
 #include "graph.h"
+#include "node.h"
 #include "util.h"
 #include <stdio.h>
 #include <string.h>
@@ -112,4 +113,26 @@ enum MenuState save_graph_menu(const Graph *g) {
         econio_textcolor(COL_RESET);
         return IDLE;
     }
+}
+
+/**
+ * @brief It asks for a node's name from the console
+ * and searches for that node in the graph
+ * If it finds the node it returns it
+ * Else it asks the user to type it in again
+ * 
+ * @param g The graph to search in
+ * @return Node* The specified node
+ */
+Node *find_node_from_console(const Graph *g) {
+    char node_name[NODE_NAME_LEN + 1];
+
+    read_str(node_name, NODE_NAME_LEN);
+    Node *node = find_node(g, node_name);
+    while (node == NULL) {
+        print_error("Could not find the specified node in graph\n");
+        read_str(node_name, NODE_NAME_LEN);
+        node = find_node(g, node_name);
+    }
+    return node;
 }

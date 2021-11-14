@@ -25,4 +25,6 @@ enum MenuState load_graph_menu(Graph *g);
 
 enum MenuState save_graph_menu(const Graph *g);
 
+Node *find_node_from_console(const Graph *g);
+
 #endif

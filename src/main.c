@@ -57,25 +57,10 @@ int main() {
                 econio_clrscr();
 
                 printf("Type in the node's name where the path should start from\n");
-
-                char node_name[NODE_NAME_LEN + 1];
-                read_str(node_name, NODE_NAME_LEN);
-                Node *from = find_node(g, node_name);
-                while (from == NULL) {
-                    print_error("Could not find the specified node in graph\n");
-                    read_str(node_name, NODE_NAME_LEN);
-                    from = find_node(g, node_name);
-                }
+                Node *from = find_node_from_console(g);
 
                 printf("Type in the node's name where the path should end\n");
-
-                read_str(node_name, NODE_NAME_LEN);
-                Node *to = find_node(g, node_name);
-                while (to == NULL) {
-                    print_error("Could not find the specified node in graph\n");
-                    read_str(node_name, NODE_NAME_LEN);
-                    to = find_node(g, node_name);
-                }
+                Node *to = find_node_from_console(g);
 
                 Path *p = find_path(g, from, to);
                 if (p == NULL) {
