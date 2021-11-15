@@ -133,8 +133,8 @@ void draw_node(SDL_Renderer *renderer, TTF_Font *font, const Node *n, double nod
  * @brief Get the vector that connects the two nodes
  * 
  * @param vector Has to be a coordinates array with length 2
- * @param n1 
- * @param n2 
+ * @param n1 From
+ * @param n2 To
  * @param node_radius 
  */
 void get_vector(Coordinates *vector, const Node *n1, const Node *n2, double node_radius) {

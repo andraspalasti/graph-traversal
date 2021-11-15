@@ -72,7 +72,7 @@ void display_graph(Graph *g) {
     free_animation(anim);
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
-    // SDL_DestroyWindow(window);
+    SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
@@ -84,14 +84,14 @@ void display_graph(Graph *g) {
  * @param p Path to animate
  */
 void display_graph_with_path(Graph *g, Path *p) {
-    assert(p != NULL);
+    assert(p != NULL && p->next_node != NULL);
 
     SDL_Window *window;
     SDL_Renderer *renderer;
     sdl_init(SCREEN_WIDTH, SCREEN_HEIGHT, &window, &renderer);
     TTF_Font *font = ttf_init("font.ttf", 14);
 
-    Animation *anim = init_animation(1500); // the time till one edge is drawn from path
+    Animation *anim = init_animation(500); // the time till one edge is drawn from path
 
     SDL_Event e;
     bool quit = false;
@@ -100,7 +100,19 @@ void display_graph_with_path(Graph *g, Path *p) {
     // remove the specified path from the graph
     // so our draw_graph function will not draw it
     // we will add these paths back at the end of the function
+    bool *is_directed = malloc(list_node_len(p) * sizeof(bool));
+    int i = 0;
+    for (Path *cur_p = p; cur_p != NULL && cur_p->next_node != NULL; cur_p = cur_p->next_node) {
+        is_directed[i] = is_connected(cur_p->next_node->node, cur_p->node);
+        if (is_directed[i]) {
+            remove_neighbour(cur_p->node, cur_p->next_node->node);
+            remove_neighbour(cur_p->next_node->node, cur_p->node);
+        } else
+            remove_neighbour(cur_p->node, cur_p->next_node->node);
+        i++;
+    }
 
+    Path *animated_path = p; // the path that is currently animating
     while (!quit) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT)
@@ -108,6 +120,7 @@ void display_graph_with_path(Graph *g, Path *p) {
 
             if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r) {
                 restart_animation(anim);
+                animated_path = p; // reset the currently animating path
             }
         }
 
@@ -119,6 +132,27 @@ void display_graph_with_path(Graph *g, Path *p) {
 
             draw_graph(renderer, font, g);
 
+            // draw the paths that already finished animating
+            for (Path *drawn_path = p; drawn_path != animated_path; drawn_path = drawn_path->next_node) {
+                draw_arrow_between_nodes(renderer, drawn_path->node, drawn_path->next_node->node, NODE_RADIUS, PATH_COLOR);
+            }
+
+            if (animated_path != NULL && animated_path->next_node != NULL) {
+                double scale_factor = anim->is_finished ? 1 : (anim->delta_time / anim->ANIM_DURATION);
+                Coordinates vector[2];
+                get_vector(vector, animated_path->node, animated_path->next_node->node, NODE_RADIUS);
+
+                draw_arrow(renderer, vector[0],
+                           add(scale(scale_factor, subtract(vector[1], vector[0])), vector[0]),
+                           PATH_COLOR);
+
+                // restart animation and jump to next path to animate
+                if (anim->is_finished) {
+                    restart_animation(anim);
+                    animated_path = animated_path->next_node;
+                }
+            }
+
             SDL_RenderPresent(renderer);
 
         } else {
@@ -127,10 +161,20 @@ void display_graph_with_path(Graph *g, Path *p) {
     }
 
     // we need to put back the path that we extracted from the graph
+    int j = 0;
+    for (Path *cur_p = p; cur_p != NULL && cur_p->next_node != NULL; cur_p = cur_p->next_node) {
+        if (is_directed[j]) {
+            add_neighbour_at(0, cur_p->node, cur_p->next_node->node);
+            add_neighbour_at(0, cur_p->next_node->node, cur_p->node);
+        } else
+            add_neighbour_at(0, cur_p->node, cur_p->next_node->node);
+        j++;
+    }
 
+    free(is_directed);
     free_animation(anim);
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
-    // SDL_DestroyWindow(window);
+    SDL_DestroyWindow(window);
     SDL_Quit();
 }
