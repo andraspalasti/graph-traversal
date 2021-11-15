@@ -80,7 +80,7 @@ void delete_node(ListNode **head, struct Node *n) {
         return;
     }
 
-    // if you want to delet from the middle
+    // if you want to delete from the middle
     prev_ln->next_node = cur_ln->next_node;
     free(cur_ln);
 }

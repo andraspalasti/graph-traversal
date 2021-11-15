@@ -2,9 +2,7 @@
 #define PATH_FINDING_H
 
 #include "graph.h"
-
-// TODO: we need to transform queue so that insertion is faster
-typedef struct ListNode Queue;
+#include "queue.h"
 
 typedef struct ListNode Path;
 
@@ -15,11 +13,5 @@ Node *min_dist_node(Queue *q, const double *dist);
 void free_path(Path *p);
 
 void print_path(Path *p);
-
-void enqueue(Queue **head, Node *n);
-
-void remove_from_queue(Queue **q, Node *n);
-
-void free_queue(Queue *q);
 
 #endif

@@ -1,8 +1,12 @@
 #include "path_finding.h"
+#include "queue.h"
 #include "util.h"
+#include <assert.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+// TODO: we should implement a hash table because this is wack
 
 /**
  * @brief It finds the possible shortest path between src and target
@@ -13,7 +17,7 @@
  * @return Path* If there is no path between the nodes than it returns a NULL pointer
  */
 Path *find_path(Graph *g, Node *src, Node *target) {
-    Queue *q = NULL;
+    Queue *q = init_queue();
 
     // in this array we will store the shortest distance from the src node
     // to the node with the corresponding index
@@ -32,13 +36,13 @@ Path *find_path(Graph *g, Node *src, Node *target) {
         else
             dist[i] = INFINITY;
         prev[i] = NULL;
-        enqueue(&q, g->nodes[i]);
+        enqueue(q, g->nodes[i]);
     }
 
     Path *p = NULL;
-    while (q != NULL) {
+    while (q->head != NULL) {
         Node *n = min_dist_node(q, dist);
-        remove_from_queue(&q, n);
+        dequeue(q, n);
 
         if (prev[n->idx] != NULL && n == target) {
             Node *cur = n;
@@ -92,6 +96,7 @@ void print_path(Path *p) {
     printf("\n");
 }
 
+// TODO: This would be better if we would do a pop rather than this
 /**
  * @brief Returns a pointer to the node from the Queue that has the
  * least amount of distance in the dist array
@@ -101,11 +106,11 @@ void print_path(Path *p) {
  * @return Node* 
  */
 Node *min_dist_node(Queue *q, const double *dist) {
-    if (q == NULL)
-        return NULL;
+    assert(q != NULL);
+    assert(q->head != NULL);
 
-    Node *min = q->node;
-    Queue *cur = q;
+    Node *min = q->head->node;
+    ListNode *cur = q->head;
     while (cur != NULL) {
         if (dist[cur->node->idx] < dist[min->idx]) {
             min = cur->node;
@@ -114,33 +119,4 @@ Node *min_dist_node(Queue *q, const double *dist) {
     }
 
     return min;
-}
-
-/**
- * @brief Adds the Node to the Queue
- * 
- * @param head The Queue to add the node to
- * @param n Node to add
- */
-void enqueue(Queue **head, Node *n) {
-    add_node_at(-1, head, n);
-}
-
-/**
- * @brief Removes the specified Node from the Queue
- * 
- * @param q The Queue to remove the Node from
- * @param n The node to remove from the Queue
- */
-void remove_from_queue(Queue **q, Node *n) {
-    delete_node(q, n);
-}
-
-/**
- * @brief Frees the memory allocated by the queue
- * 
- * @param q 
- */
-void free_queue(Queue *q) {
-    free_list_node(q);
 }
