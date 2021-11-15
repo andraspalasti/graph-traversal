@@ -17,6 +17,8 @@
  * @param g Graph to animate
  */
 void display_graph(Graph *g) {
+    assert(g != NULL);
+
     SDL_Window *window;
     SDL_Renderer *renderer;
     sdl_init(SCREEN_WIDTH, SCREEN_HEIGHT, &window, &renderer);
@@ -43,24 +45,24 @@ void display_graph(Graph *g) {
         // if animation is over dont waste resources on drawing the same thing
         // rather check for input every 100ms
         if (anim->is_finished == false) {
-
-            update_animation(anim);
+            update_animation(anim); // anim->is_finished can change here
 
             SDL_SetRenderDrawColor(renderer, bg.r, bg.g, bg.b, bg.a);
             SDL_RenderClear(renderer);
 
-            // scale graph down
-            for (int i = 0; i < g->used; i++) {
-                g->nodes[i]->coords = scale(anim->delta_time / anim->ANIM_DURATION, g->nodes[i]->coords);
+            if (!anim->is_finished) {
+                // scale graph down
+                for (int i = 0; i < g->used; i++)
+                    g->nodes[i]->coords = scale(anim->delta_time / anim->ANIM_DURATION, g->nodes[i]->coords);
             }
 
-            draw_graph(renderer, font, g, NULL);
+            draw_graph(renderer, font, g);
 
-            // scale graph back to original size
-            for (int i = 0; i < g->used; i++) {
-                g->nodes[i]->coords = scale(anim->ANIM_DURATION / anim->delta_time, g->nodes[i]->coords);
+            if (!anim->is_finished) {
+                // scale graph back to original size
+                for (int i = 0; i < g->used; i++)
+                    g->nodes[i]->coords = scale(anim->ANIM_DURATION / anim->delta_time, g->nodes[i]->coords);
             }
-
             SDL_RenderPresent(renderer);
         } else {
             SDL_Delay(100);
@@ -70,7 +72,7 @@ void display_graph(Graph *g) {
     free_animation(anim);
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    // SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
@@ -83,20 +85,21 @@ void display_graph(Graph *g) {
  */
 void display_graph_with_path(Graph *g, Path *p) {
     assert(p != NULL);
+
     SDL_Window *window;
     SDL_Renderer *renderer;
     sdl_init(SCREEN_WIDTH, SCREEN_HEIGHT, &window, &renderer);
     TTF_Font *font = ttf_init("font.ttf", 14);
 
-    Animation *anim = init_animation(1500);
+    Animation *anim = init_animation(1500); // the time till one edge is drawn from path
 
     SDL_Event e;
     bool quit = false;
     SDL_Color bg = hexcolor_to_sdl_color(BG_COLOR);
 
-    // the current path which is being animated
-    Path *from = p;
-    Path *to = p != NULL ? p->next_node : NULL;
+    // remove the specified path from the graph
+    // so our draw_graph function will not draw it
+    // we will add these paths back at the end of the function
 
     while (!quit) {
         while (SDL_PollEvent(&e) != 0) {
@@ -105,9 +108,6 @@ void display_graph_with_path(Graph *g, Path *p) {
 
             if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_r) {
                 restart_animation(anim);
-                // reset animated nodes
-                from = p;
-                to = p != NULL ? p->next_node : NULL;
             }
         }
 
@@ -117,39 +117,7 @@ void display_graph_with_path(Graph *g, Path *p) {
             SDL_SetRenderDrawColor(renderer, bg.r, bg.g, bg.b, bg.a);
             SDL_RenderClear(renderer);
 
-            draw_graph(renderer, font, g, p);
-
-            // draw the paths that already finished animating
-            for (Path *i = p; i != from; i = i->next_node) {
-                if (is_connected(i->next_node->node, i->node)) {
-                    draw_line_between_nodes(renderer, i->node, i->next_node->node, NODE_RADIUS, PATH_COLOR);
-                } else {
-                    draw_arrow_between_nodes(renderer, i->node, i->next_node->node, NODE_RADIUS, PATH_COLOR);
-                }
-            }
-
-            if (from != NULL && to != NULL) {
-                double scale_factor = anim->is_finished ? 1 : (anim->delta_time / anim->ANIM_DURATION);
-                Coordinates vector[2];
-                get_vector(vector, from->node, to->node, NODE_RADIUS);
-
-                if (is_connected(to->node, from->node)) {
-                    draw_line(renderer, vector[0],
-                              add(scale(scale_factor, subtract(vector[1], vector[0])), vector[0]),
-                              PATH_COLOR);
-                } else {
-                    draw_arrow(renderer, vector[0],
-                               add(scale(scale_factor, subtract(vector[1], vector[0])), vector[0]),
-                               PATH_COLOR);
-                }
-
-                // restart animation and jump to next path to animate
-                if (anim->is_finished) {
-                    restart_animation(anim);
-                    from = to;
-                    to = to->next_node;
-                }
-            }
+            draw_graph(renderer, font, g);
 
             SDL_RenderPresent(renderer);
 
@@ -158,9 +126,11 @@ void display_graph_with_path(Graph *g, Path *p) {
         }
     }
 
+    // we need to put back the path that we extracted from the graph
+
     free_animation(anim);
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    // SDL_DestroyWindow(window);
     SDL_Quit();
 }

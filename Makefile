@@ -4,7 +4,6 @@ CC = clang
 
 SRC = src
 OBJ = obj
-ECONIO = c-econio
 
 LIBS = $(shell pkg-config --libs --cflags sdl2 sdl2_gfx SDL2_ttf) # libs to include
 

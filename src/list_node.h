@@ -18,4 +18,6 @@ void free_list_node(ListNode *list_node);
 
 void print_list_node(const ListNode *list_node);
 
+int list_node_len(ListNode *ln);
+
 #endif

@@ -9,51 +9,43 @@
 #include <assert.h>
 
 /**
- * @brief Scales the node's coordinates by scale_factor and draws the graph
+ * @brief It draws the specified graph to the renderer
  * 
- * @param renderer 
- * @param font 
- * @param g 
- * @param exclude_path It will not draw these paths
+ * @param renderer The renderer to draw to
+ * @param font The font to use
+ * @param g The graph to draw
  */
-void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g, const Path *exclude_path) {
-    // the matrix contains what edges we have already drawn
-    bool **adjacency_matrix = init_bool_matrix(g->used, g->used);
-    for (int i = 0; i < g->used; i++)
-        for (int j = 0; j < g->used; j++)
-            adjacency_matrix[i][j] = false;
+void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
+    assert(g != NULL);
+    assert(renderer != NULL);
+    assert(font != NULL);
 
-    // Do not draw the paths in exclude_path
-    while (exclude_path != NULL && exclude_path->next_node != NULL) {
-        adjacency_matrix[exclude_path->node->idx][exclude_path->next_node->node->idx] = true;
-        adjacency_matrix[exclude_path->next_node->node->idx][exclude_path->node->idx] = true;
-        exclude_path = exclude_path->next_node;
-    }
+    // the nodes that already have every edge drawn
+    bool *drawn_nodes = calloc(g->used, sizeof(bool));
+    check_malloc(drawn_nodes);
 
     // draw edges first so they dont overlap nodes
     for (int i = 0; i < g->used; i++) {
         ListNode *neighbour = g->nodes[i]->neighbours;
         while (neighbour != NULL) {
-            // only draw an edge if we have not drawn it yet
-            if (adjacency_matrix[i][neighbour->node->idx] == false) {
-                if (is_connected(neighbour->node, g->nodes[i])) {
-                    draw_line_between_nodes(renderer, g->nodes[i], neighbour->node, NODE_RADIUS, EDGE_COLOR);
-                    adjacency_matrix[i][neighbour->node->idx] = true;
-                    adjacency_matrix[neighbour->node->idx][i] = true;
-                } else {
-                    draw_arrow_between_nodes(renderer, g->nodes[i], neighbour->node, NODE_RADIUS, EDGE_COLOR);
-                    adjacency_matrix[i][neighbour->node->idx] = true;
-                }
+            bool is_directed = is_connected(neighbour->node, g->nodes[i]);
+
+            if (is_directed && drawn_nodes[neighbour->node->idx] == false) {
+                draw_line_between_nodes(renderer, g->nodes[i], neighbour->node, NODE_RADIUS, EDGE_COLOR);
+            } else if (!is_directed) {
+                draw_arrow_between_nodes(renderer, g->nodes[i], neighbour->node, NODE_RADIUS, EDGE_COLOR);
             }
 
             neighbour = neighbour->next_node;
         }
+        // mark this node as drawn
+        drawn_nodes[i] = true;
     }
 
     for (int i = 0; i < g->used; i++) {
         draw_node(renderer, font, g->nodes[i], NODE_RADIUS);
     }
-    free_bool_matrix(adjacency_matrix);
+    free(drawn_nodes);
 }
 
 /**

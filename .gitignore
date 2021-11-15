@@ -6,6 +6,7 @@
 .DS_Store
 
 *.csv
+*.zip
 SPEC.md
 
 # compiler files

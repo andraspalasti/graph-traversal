@@ -86,6 +86,21 @@ void delete_node(ListNode **head, struct Node *n) {
 }
 
 /**
+ * @brief Returns the number of elements that the list node contains
+ * 
+ * @param ln The list node to count elements in
+ * @return int The number of elements
+ */
+int list_node_len(ListNode *ln) {
+    int len = 0;
+    while (ln != NULL) {
+        ln = ln->next_node;
+        len++;
+    }
+    return len;
+}
+
+/**
  * @brief Instantiates a new list_node
  * 
  * @param n Node to store

@@ -3,6 +3,7 @@
 
 #include "graph.h"
 
+// TODO: we need to transform queue so that insertion is faster
 typedef struct ListNode Queue;
 
 typedef struct ListNode Path;

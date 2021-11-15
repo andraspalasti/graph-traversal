@@ -123,9 +123,7 @@ Node *min_dist_node(Queue *q, const double *dist) {
  * @param n Node to add
  */
 void enqueue(Queue **head, Node *n) {
-    // insertion is the fastest when pos=0
-    // and the order does not matter to us so its ok
-    add_node_at(0, head, n);
+    add_node_at(-1, head, n);
 }
 
 /**
