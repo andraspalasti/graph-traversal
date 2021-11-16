@@ -27,7 +27,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
 
 debug:
-	$(CC) -o $(TARGET) $(SRCS) $(CFLAGS) -g
+	$(CC) -o $(TARGET) $(SRCS) $(INCLUDES) $(CFLAGS) -g
 
 $(OBJ)/%.o: $(INCLUDE)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
