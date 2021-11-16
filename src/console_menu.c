@@ -1,4 +1,5 @@
 #include "console_menu.h"
+#include "../include/debugmalloc.h"
 #include "../include/econio.h"
 #include "file_management.h"
 #include "graph.h"

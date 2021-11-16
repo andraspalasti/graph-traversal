@@ -1,4 +1,5 @@
 #include "animations.h"
+#include "../include/debugmalloc.h"
 #include "util.h"
 #include <SDL.h>
 #include <assert.h>

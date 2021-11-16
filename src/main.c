@@ -1,3 +1,4 @@
+#include "../include/debugmalloc.h"
 #include "../include/econio.h"
 #include "console_menu.h"
 #include "coordinates.h"
@@ -73,6 +74,7 @@ int main() {
                 econio_clrscr();
                 printf("Close the SDL window to continue\n");
                 display_graph_with_path(g, p);
+                free_path(p);
                 state = IDLE;
                 break;
 
@@ -81,8 +83,7 @@ int main() {
                 break;
         }
     }
-    econio_clrscr();
-
+    // econio_clrscr();
     free_graph(g);
     return 0;
 }

@@ -1,4 +1,5 @@
 #include "path_finding.h"
+#include "../include/debugmalloc.h"
 #include "queue.h"
 #include "util.h"
 #include <assert.h>

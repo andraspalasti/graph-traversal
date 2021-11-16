@@ -1,4 +1,5 @@
 #include "coordinates.h"
+#include "../include/debugmalloc.h"
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>

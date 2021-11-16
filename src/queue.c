@@ -1,4 +1,5 @@
 #include "queue.h"
+#include "../include/debugmalloc.h"
 #include "util.h"
 #include <stdlib.h>
 

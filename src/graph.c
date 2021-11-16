@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "../include/debugmalloc.h"
 #include "util.h"
 #include <stdio.h>
 #include <stdlib.h>

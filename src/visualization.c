@@ -1,4 +1,5 @@
 #include "visualization.h"
+#include "../include/debugmalloc.h"
 #include "animations.h"
 #include "coordinates.h"
 #include "draw.h"

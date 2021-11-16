@@ -1,4 +1,5 @@
 #include "util.h"
+#include "../include/debugmalloc.h"
 #include "../include/econio.h"
 #include <SDL.h>
 #include <SDL_ttf.h>

@@ -1,4 +1,5 @@
 #include "node.h"
+#include "../include/debugmalloc.h"
 #include "list_node.h"
 #include "util.h"
 #include <assert.h>

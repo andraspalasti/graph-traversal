@@ -1,4 +1,5 @@
 #include "file_management.h"
+#include "../include/debugmalloc.h"
 #include "graph.h"
 #include "util.h"
 #include "visualization.h"
@@ -78,7 +79,6 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
 
         line_num++;
     }
-    free(line);
 }
 
 /**
@@ -113,7 +113,6 @@ void read_edges_from_csv(FILE *fp, Graph *g) {
 
         line_num++;
     }
-    free(line);
 }
 
 /**

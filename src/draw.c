@@ -1,4 +1,5 @@
 #include "draw.h"
+#include "../include/debugmalloc.h"
 #include "coordinates.h"
 #include "graph.h"
 #include "sdl_helpers.h"

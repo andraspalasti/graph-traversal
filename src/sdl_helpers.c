@@ -1,4 +1,5 @@
 #include "sdl_helpers.h"
+#include "../include/debugmalloc.h"
 #include "coordinates.h"
 #include "util.h"
 #include "visualization.h"
