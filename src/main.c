@@ -84,6 +84,7 @@ int main() {
         }
     }
     // econio_clrscr();
+    plint();
     free_graph(g);
     return 0;
 }

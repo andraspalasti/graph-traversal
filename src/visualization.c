@@ -92,7 +92,7 @@ void display_graph_with_path(Graph *g, Path *p) {
     sdl_init(SCREEN_WIDTH, SCREEN_HEIGHT, &window, &renderer);
     TTF_Font *font = ttf_init("font.ttf", 14);
 
-    Animation *anim = init_animation(500); // the time till one edge is drawn from path
+    Animation *anim = init_animation(1000); // the time till one edge is drawn from path
 
     SDL_Event e;
     bool quit = false;
