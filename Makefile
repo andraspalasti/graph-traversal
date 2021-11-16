@@ -4,13 +4,21 @@ CC = clang
 
 SRC = src
 OBJ = obj
+INCLUDE = include
 
 LIBS = $(shell pkg-config --libs --cflags sdl2 sdl2_gfx SDL2_ttf) # libs to include
 
 CFLAGS = -Wall -std=c99 -Wno-unused-command-line-argument $(LIBS)
 
 SRCS = $(wildcard $(SRC)/*.c) # get all src files
-OBJS = $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SRCS)) # create all obj file names from src files
+INCLUDES = $(wildcard $(INCLUDE)/*.c) # get all include files
+
+# create all obj file names from src and include files
+OBJS = $(patsubst $(INCLUDE)/%.c, $(OBJ)/%.o, $(INCLUDES))
+OBJS += $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SRCS))
+
+# if OBJ dir does not exist create it
+$(shell if [ ! -d "${OBJ}" ]; then mkdir -p ${OBJ}; fi;)
 
 all: $(TARGET)
 
@@ -21,9 +29,11 @@ $(TARGET): $(OBJS)
 debug:
 	$(CC) -o $(TARGET) $(SRCS) $(CFLAGS) -g
 
+$(OBJ)/%.o: $(INCLUDE)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 # create all object files
 $(OBJ)/%.o: $(SRC)/%.c
-	mkdir -p $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
