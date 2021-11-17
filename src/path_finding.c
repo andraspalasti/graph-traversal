@@ -1,5 +1,6 @@
 #include "path_finding.h"
 #include "../include/debugmalloc.h"
+#include "hash_tables/hash_table_n.h"
 #include "queue.h"
 #include "util.h"
 #include <assert.h>
@@ -25,10 +26,8 @@ Path *find_path(Graph *g, Node *src, Node *target) {
     double *dist = (double *)malloc(g->used * sizeof(double));
     check_malloc(dist);
 
-    // in this array we will store the shortest route that is
-    // needed to take to the src node
-    Node **prev = (Node **)malloc(g->used * sizeof(Node *));
-    check_malloc(prev);
+    // with this table we can traverse back to find the complete path
+    HashTableN *prev = init_hash_table_n(g->used);
 
     // fill with default values
     for (int i = 0; i < g->used; i++) {
@@ -36,39 +35,45 @@ Path *find_path(Graph *g, Node *src, Node *target) {
             dist[i] = 0;
         else
             dist[i] = INFINITY;
-        prev[i] = NULL;
+        prev->set(prev, g->nodes[i]->name, NULL);
         enqueue(q, g->nodes[i]);
     }
 
-    Path *p = NULL;
     while (q->head != NULL) {
         Node *n = min_dist_node(q, dist);
         dequeue(q, n);
 
-        if (prev[n->idx] != NULL && n == target) {
+        if (prev->get(prev, n->name) != NULL && n == target) {
+            // we found the end of the path and we need to traverse it back
+            Path *p = NULL;
             Node *cur = n;
             while (cur != NULL) {
                 add_node_at(0, &p, cur);
-                cur = prev[cur->idx];
+                cur = prev->get(prev, cur->name);
             }
-            break;
+            prev->free_table(prev);
+            free(dist);
+            free_queue(q);
+            return p;
         }
 
         ListNode *neighbour = n->neighbours;
         while (neighbour != NULL) {
             double alt_route = dist[n->idx] + distance(n->coords, neighbour->node->coords);
+            // check if the this route is shorter than the known
             if (alt_route < dist[neighbour->node->idx]) {
                 dist[neighbour->node->idx] = alt_route;
-                prev[neighbour->node->idx] = n;
+                prev->set(prev, neighbour->node->name, n);
             }
             neighbour = neighbour->next_node;
         }
     }
 
-    free(prev);
+    // there is no path
+    prev->free_table(prev);
     free(dist);
     free_queue(q);
-    return p;
+    return NULL;
 }
 
 /**
