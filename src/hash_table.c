@@ -39,14 +39,14 @@ HashTable *init_ht(int size) {
 
 /**
  * @brief If it finds the specified key in the HashTable
- * it overrides its value with the specified
- * else it inserts it in
+ * than it overrides its value pointer
+ * else it inserts the specified pointer in
  * 
  * @param ht The hash table to insert in
  * @param key The key to search for
- * @param val The data to insert
+ * @param val The pointer to the data
  */
-void ht_set_value(HashTable *ht, char *key, void *val) {
+void set_value_ptr(HashTable *ht, char *key, void *val) {
     int idx = hash(key) % ht->size;
     Record *prev_r = NULL;
     Record *r = ht->records[idx];
@@ -95,7 +95,7 @@ void *ht_get_value(const HashTable *ht, const char *key) {
  * 
  * @param ht The hash table to free
  */
-void free_ht(HashTable *ht) {
+void ht_free(HashTable *ht) {
     for (int i = 0; i < ht->size; i++) {
 
         // we need to free all records in the row
@@ -122,8 +122,9 @@ static Record *init_record(char *key, void *val) {
     Record *r = malloc(sizeof(Record));
     check_malloc(r);
 
-    r->key = strdup(key);
+    r->key = malloc(strlen(key) + 1);
     check_malloc(r->key);
+    strcpy(r->key, key);
     r->val = val;
     r->next = NULL;
     return r;

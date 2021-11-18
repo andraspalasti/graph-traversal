@@ -12,10 +12,10 @@ typedef struct HashTable {
 
 HashTable *init_ht(int size);
 
-void ht_set_value(HashTable *ht, char *key, void *val);
+void set_value_ptr(HashTable *ht, char *key, void *val);
 
 void *ht_get_value(const HashTable *ht, const char *key);
 
-void free_ht(HashTable *ht);
+void ht_free(HashTable *ht);
 
 #endif
