@@ -2,6 +2,7 @@
 #include "../include/debugmalloc.h"
 #include "coordinates.h"
 #include "graph.h"
+#include "hash_table.h"
 #include "sdl_helpers.h"
 #include "util.h"
 #include "visualization.h"
@@ -22,8 +23,11 @@ void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
     assert(font != NULL);
 
     // the nodes that already have every edge drawn
-    bool *drawn_nodes = calloc(g->used, sizeof(bool));
-    check_malloc(drawn_nodes);
+    bool *arr = calloc(g->used, sizeof(bool));
+    check_malloc(arr);
+    HashTable *drawn_nodes = init_ht(g->used);
+    for (int i = 0; i < g->used; i++)
+        ht_set_value_ptr(drawn_nodes, g->nodes[i]->name, &(arr[i]));
 
     // draw edges first so they dont overlap nodes
     for (int i = 0; i < g->used; i++) {
@@ -31,7 +35,10 @@ void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
         while (neighbour != NULL) {
             bool is_directed = is_connected(neighbour->node, g->nodes[i]);
 
-            if (is_directed && drawn_nodes[neighbour->node->idx] == false) {
+            bool *is_drawn = ht_get_value(drawn_nodes, neighbour->node->name);
+            assert(is_drawn != NULL);
+
+            if (is_directed && !*is_drawn) {
                 draw_line_between_nodes(renderer, g->nodes[i], neighbour->node, NODE_RADIUS, EDGE_COLOR);
             } else if (!is_directed) {
                 draw_arrow_between_nodes(renderer, g->nodes[i], neighbour->node, NODE_RADIUS, EDGE_COLOR);
@@ -39,14 +46,18 @@ void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
 
             neighbour = neighbour->next_node;
         }
-        // mark this node as drawn
-        drawn_nodes[i] = true;
+
+        // mark this node as drawn because we have drawn all its edges
+        bool *is_drawn = ht_get_value(drawn_nodes, g->nodes[i]->name);
+        assert(is_drawn != NULL);
+        *is_drawn = true;
     }
 
     for (int i = 0; i < g->used; i++) {
         draw_node(renderer, font, g->nodes[i], NODE_RADIUS);
     }
-    free(drawn_nodes);
+    ht_free(drawn_nodes);
+    free(arr);
 }
 
 /**

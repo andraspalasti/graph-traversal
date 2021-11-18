@@ -33,12 +33,12 @@ Path *find_path(Graph *g, Node *src, Node *target) {
     for (int i = 0; i < g->used; i++) {
         if (g->nodes[i] == src) {
             distances[i] = 0;
-            set_value_ptr(dist, g->nodes[i]->name, &(distances[i]));
+            ht_set_value_ptr(dist, g->nodes[i]->name, &(distances[i]));
         } else {
             distances[i] = INFINITY;
-            set_value_ptr(dist, g->nodes[i]->name, &(distances[i]));
+            ht_set_value_ptr(dist, g->nodes[i]->name, &(distances[i]));
         }
-        set_value_ptr(prev, g->nodes[i]->name, NULL);
+        ht_set_value_ptr(prev, g->nodes[i]->name, NULL);
         enqueue(q, g->nodes[i]);
     }
 
@@ -77,7 +77,7 @@ Path *find_path(Graph *g, Node *src, Node *target) {
             // check if the this route is shorter than the known
             if (alt_route < *route_dist) {
                 *route_dist = alt_route;
-                set_value_ptr(prev, neighbour->node->name, n); // now it points to another node
+                ht_set_value_ptr(prev, neighbour->node->name, n); // now it points to another node
             }
             neighbour = neighbour->next_node;
         }

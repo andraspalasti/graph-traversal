@@ -12,7 +12,7 @@ typedef struct HashTable {
 
 HashTable *init_ht(int size);
 
-void set_value_ptr(HashTable *ht, char *key, void *val);
+void ht_set_value_ptr(HashTable *ht, char *key, void *val);
 
 void *ht_get_value(const HashTable *ht, const char *key);
 

@@ -46,7 +46,7 @@ HashTable *init_ht(int size) {
  * @param key The key to search for
  * @param val The pointer to the data
  */
-void set_value_ptr(HashTable *ht, char *key, void *val) {
+void ht_set_value_ptr(HashTable *ht, char *key, void *val) {
     int idx = hash(key) % ht->size;
     Record *prev_r = NULL;
     Record *r = ht->records[idx];
