@@ -12,7 +12,7 @@ typedef struct HashTableD {
     int size;
     struct Record **records;
     double *(*get)(const struct HashTableD *, const char *);
-    void (*set)(struct HashTableD *, char *, double);
+    void (*set)(struct HashTableD *, char *, bool);
     void (*free_table)(struct HashTableD *);
 } HashTableD;
 

@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// TODO: we should implement a hash table because this is wack
+static Node *nearest_node(const Queue *q, const HashTableD *dist);
 
 /**
  * @brief It finds the possible shortest path between src and target
@@ -39,7 +39,7 @@ Path *find_path(Graph *g, Node *src, Node *target) {
     }
 
     while (q->head != NULL) {
-        Node *n = min_dist_node(q, dist);
+        Node *n = nearest_node(q, dist);
         dequeue(q, n);
 
         if (prev->get(prev, n->name) != NULL && n == target) {
@@ -110,27 +110,36 @@ void print_path(Path *p) {
     printf("\n");
 }
 
-// TODO: This would be better if we would do a pop rather than this
 /**
  * @brief Returns a pointer to the node from the Queue that has the
- * least amount of distance in the dist array
+ * least amount of distance in the HashTable
  * 
- * @param q 
- * @param dist An array that stores the distance for each node
- * @return Node* 
+ * @param q The queue to search in
+ * @param dist The HashTable that stores how far is each node
+ * @return Node* pointer to the nearest node 
+ * could be a NULL pointer if no node is in the HashTable 
  */
-Node *min_dist_node(Queue *q, const double *dist) {
-    assert(q != NULL);
-    assert(q->head != NULL);
+static Node *nearest_node(const Queue *q, const HashTableD *dist) {
+    if (q == NULL || q->head == NULL)
+        return NULL;
 
-    Node *min = q->head->node;
     ListNode *cur = q->head;
+
+    Node *nearest_node = cur->node;
+    double *min_dist = dist->get(dist, nearest_node->name);
     while (cur != NULL) {
-        if (dist[cur->node->idx] < dist[min->idx]) {
-            min = cur->node;
+        double *cur_dist = dist->get(dist, cur->node->name);
+        if (cur_dist != NULL) {
+            if (min_dist == NULL) {
+                nearest_node = cur->node;
+                min_dist = cur_dist;
+            } else if (*cur_dist < *min_dist) {
+                nearest_node = cur->node;
+                min_dist = cur_dist;
+            }
         }
         cur = cur->next_node;
     }
 
-    return min;
+    return min_dist == NULL ? NULL : nearest_node;
 }
