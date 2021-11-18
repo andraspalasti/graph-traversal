@@ -1,0 +1,21 @@
+#ifndef HASH_TABLE_H
+#define HASH_TABLE_H
+
+#include <stdbool.h>
+
+struct Record;
+
+typedef struct HashTable {
+    int size;
+    struct Record **records;
+} HashTable;
+
+HashTable *init_ht(int size);
+
+void ht_set_value(HashTable *ht, char *key, void *val);
+
+void *ht_get_value(const HashTable *ht, const char *key);
+
+void free_ht(HashTable *ht);
+
+#endif
