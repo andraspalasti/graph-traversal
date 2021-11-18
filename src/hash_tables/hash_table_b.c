@@ -1,19 +1,19 @@
-#include "hash_table_d.h"
 #include "../../include/debugmalloc.h"
 #include "../util.h"
+#include "hash_table_d.h"
 #include <stdlib.h>
 #include <string.h>
 
 typedef struct Record {
     char *key;
-    double val;
+    bool val;
     struct Record *next;
 } Record;
 
-static void set(HashTableD *self, char *key, double val);
-static double *get(const HashTableD *self, const char *key);
+static void set(HashTableD *self, char *key, bool val);
+static bool *get(const HashTableD *self, const char *key);
 static void free_hash_table(HashTableD *self);
-static struct Record *init_record(char *key, double val);
+static struct Record *init_record(char *key, bool val);
 static void free_record(struct Record *r);
 
 /**
@@ -22,7 +22,7 @@ static void free_record(struct Record *r);
  * @param size The size of the table
  * @return HashTableD* The pointer to the newly created hash table
  */
-HashTableD *init_hash_table_d(int size) {
+HashTableD *init_hash_table_b(int size) {
     HashTableD *hash_table = malloc(sizeof(HashTableD));
     check_malloc(hash_table);
 
@@ -47,7 +47,7 @@ HashTableD *init_hash_table_d(int size) {
  * @param key The key to search for
  * @return double* The found value if we did not find the key it will be a NULL pointer
  */
-static double *get(const HashTableD *self, const char *key) {
+static bool *get(const HashTableD *self, const char *key) {
     int idx = hash(key) % self->size;
     Record *td = self->records[idx];
     while (td != NULL && strcmp(key, td->key) != 0) {
@@ -65,7 +65,7 @@ static double *get(const HashTableD *self, const char *key) {
  * @param key The key to insert the val with
  * @param val The value to insert
  */
-static void set(HashTableD *self, char *key, double val) {
+static void set(HashTableD *self, char *key, bool val) {
     int idx = hash(key) % self->size;
     Record *prev_td = NULL;
     Record *r = self->records[idx];
@@ -117,7 +117,7 @@ static void free_hash_table(HashTableD *self) {
  * @param val The value to store
  * @return Record* 
  */
-static Record *init_record(char *key, double val) {
+static Record *init_record(char *key, bool val) {
     Record *r = malloc(sizeof(Record));
     check_malloc(r);
 
