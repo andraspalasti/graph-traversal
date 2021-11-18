@@ -1,5 +1,6 @@
 #include "path_finding.h"
 #include "../include/debugmalloc.h"
+#include "hash_tables/hash_table_d.h"
 #include "hash_tables/hash_table_n.h"
 #include "queue.h"
 #include "util.h"
@@ -21,10 +22,8 @@
 Path *find_path(Graph *g, Node *src, Node *target) {
     Queue *q = init_queue();
 
-    // in this array we will store the shortest distance from the src node
-    // to the node with the corresponding index
-    double *dist = (double *)malloc(g->used * sizeof(double));
-    check_malloc(dist);
+    // in this table we store the shortest distance that is needed to take to a node
+    HashTableD *dist = init_hash_table_d(g->used);
 
     // with this table we can traverse back to find the complete path
     HashTableN *prev = init_hash_table_n(g->used);
@@ -32,9 +31,9 @@ Path *find_path(Graph *g, Node *src, Node *target) {
     // fill with default values
     for (int i = 0; i < g->used; i++) {
         if (g->nodes[i] == src)
-            dist[i] = 0;
+            dist->set(dist, g->nodes[i]->name, 0.0);
         else
-            dist[i] = INFINITY;
+            dist->set(dist, g->nodes[i]->name, INFINITY);
         prev->set(prev, g->nodes[i]->name, NULL);
         enqueue(q, g->nodes[i]);
     }
@@ -52,17 +51,26 @@ Path *find_path(Graph *g, Node *src, Node *target) {
                 cur = prev->get(prev, cur->name);
             }
             prev->free_table(prev);
-            free(dist);
+            dist->free_table(dist);
             free_queue(q);
             return p;
         }
 
         ListNode *neighbour = n->neighbours;
         while (neighbour != NULL) {
-            double alt_route = dist[n->idx] + distance(n->coords, neighbour->node->coords);
+            double *dist_to_cur = dist->get(dist, n->name); // the distance to the current node
+            assert(dist_to_cur != NULL);                    // can not be null because we already set a default value
+
+            double alt_route = *dist_to_cur + distance(n->coords, neighbour->node->coords);
+
+            // if we already touched this node it will be the distance of that route
+            // else it will be INFINITY
+            double *known_route_dist = dist->get(dist, neighbour->node->name);
+            assert(known_route_dist != NULL); // can not be null because we already set a default value
+
             // check if the this route is shorter than the known
-            if (alt_route < dist[neighbour->node->idx]) {
-                dist[neighbour->node->idx] = alt_route;
+            if (alt_route < *known_route_dist) {
+                dist->set(dist, neighbour->node->name, alt_route);
                 prev->set(prev, neighbour->node->name, n);
             }
             neighbour = neighbour->next_node;
@@ -71,7 +79,7 @@ Path *find_path(Graph *g, Node *src, Node *target) {
 
     // there is no path
     prev->free_table(prev);
-    free(dist);
+    dist->free_table(dist);
     free_queue(q);
     return NULL;
 }
