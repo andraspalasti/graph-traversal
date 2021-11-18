@@ -6,6 +6,10 @@
 
 struct Record;
 
+/**
+ * @brief A hash table that stores nodes
+ * 
+ */
 typedef struct HashTableN {
     int size;
     struct Record **records;

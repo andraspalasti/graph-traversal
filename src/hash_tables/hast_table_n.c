@@ -1,6 +1,5 @@
 #include "../../include/debugmalloc.h"
 #include "../util.h"
-#include "hash.h"
 #include "hash_table_n.h"
 #include <stdlib.h>
 #include <string.h>
@@ -11,13 +10,11 @@ typedef struct Record {
     struct Record *next;
 } Record;
 
-HashTableN *init_hash_table_n(int size);
-Node *get(const HashTableN *self, const char *key);
-void set(HashTableN *self, char *key, Node *n);
-void free_hash_table(HashTableN *self);
-
-Record *init_record(char *key, Node *n);
-void free_record(Record *r);
+static Node *get(const HashTableN *self, const char *key);
+static void set(HashTableN *self, char *key, Node *n);
+static void free_hash_table(HashTableN *self);
+static struct Record *init_record(char *key, Node *n);
+static void free_record(struct Record *r);
 
 /**
  * @brief Instantiates a hash table struct with default values
@@ -43,27 +40,6 @@ HashTableN *init_hash_table_n(int size) {
 }
 
 /**
- * @brief Frees the memory allocated by the hash table
- * 
- * @param self The hash table to free
- */
-void free_hash_table(HashTableN *self) {
-    for (int i = 0; i < self->size; i++) {
-
-        // we need to free all records in the row
-        Record *r = self->records[i];
-        while (r != NULL) {
-            Record *tmp = r->next;
-            free_record(r);
-            r = tmp;
-        }
-    }
-
-    free(self->records);
-    free(self);
-}
-
-/**
  * @brief It searches for the value stored
  * by the specified key
  * 
@@ -71,7 +47,7 @@ void free_hash_table(HashTableN *self) {
  * @param key The key to search for
  * @return Node* The found node if we did not find the key it will be a NULL pointer
  */
-Node *get(const HashTableN *self, const char *key) {
+static Node *get(const HashTableN *self, const char *key) {
     int idx = hash(key) % self->size;
     Record *td = self->records[idx];
     while (td != NULL && strcmp(key, td->key) != 0) {
@@ -89,7 +65,7 @@ Node *get(const HashTableN *self, const char *key) {
  * @param key The key to insert the node with
  * @param n The node to insert
  */
-void set(HashTableN *self, char *key, Node *n) {
+static void set(HashTableN *self, char *key, Node *n) {
     int idx = hash(key) % self->size;
     Record *prev_td = NULL;
     Record *r = self->records[idx];
@@ -114,13 +90,34 @@ void set(HashTableN *self, char *key, Node *n) {
 }
 
 /**
+ * @brief Frees the memory allocated by the hash table
+ * 
+ * @param self The hash table to free
+ */
+static void free_hash_table(HashTableN *self) {
+    for (int i = 0; i < self->size; i++) {
+
+        // we need to free all records in the row
+        Record *r = self->records[i];
+        while (r != NULL) {
+            Record *tmp = r->next;
+            free_record(r);
+            r = tmp;
+        }
+    }
+
+    free(self->records);
+    free(self);
+}
+
+/**
  * @brief Instantiates a record struct
  * 
  * @param key The key to use
  * @param n The node to store
  * @return Record* 
  */
-Record *init_record(char *key, Node *n) {
+static Record *init_record(char *key, Node *n) {
     Record *r = malloc(sizeof(Record));
     check_malloc(r);
 
@@ -139,7 +136,7 @@ Record *init_record(char *key, Node *n) {
  * 
  * @param td The record to free
  */
-void free_record(Record *r) {
+static void free_record(Record *r) {
     // free(td->key);
     free(r);
 }
