@@ -10,6 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+static void read_nodes_from_csv(FILE *fp, Graph *g);
+
+static void read_edges_from_csv(FILE *fp, Graph *g);
+
 /**
  * @brief Reads a csv file into a graph
  * 
@@ -38,7 +42,7 @@ void read_graph_from_csv(const char *fpath, Graph *g) {
  * @param fp 
  * @param g 
  */
-void read_nodes_from_csv(FILE *fp, Graph *g) {
+static void read_nodes_from_csv(FILE *fp, Graph *g) {
     int line_num = 1;
     char *line = NULL;
     size_t len = 0;
@@ -87,7 +91,7 @@ void read_nodes_from_csv(FILE *fp, Graph *g) {
  * @param fp 
  * @param g 
  */
-void read_edges_from_csv(FILE *fp, Graph *g) {
+static void read_edges_from_csv(FILE *fp, Graph *g) {
     int line_num = 1;
     char *line = NULL;
     size_t len = 0;
