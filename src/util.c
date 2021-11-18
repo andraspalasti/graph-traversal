@@ -1,46 +1,11 @@
 #include "util.h"
 #include "../include/debugmalloc.h"
 #include "../include/econio.h"
-#include <SDL.h>
-#include <SDL_ttf.h>
 #include <assert.h>
 #include <stdarg.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/**
- * @brief Instantiates a matrix with the specified number of rows and columns
- * 
- * @param rows Number of rows
- * @param cols Number of columns
- * @return bool** 
- */
-bool **init_bool_matrix(int rows, int cols) {
-    assert(rows > 0 && cols > 0);
-
-    bool **matrix = malloc(rows * sizeof(bool *));
-    check_malloc(matrix);
-    matrix[0] = malloc(rows * cols * sizeof(bool));
-    check_malloc(matrix[0]);
-
-    for (int i = 1; i < rows; i++)
-        matrix[i] = matrix[0] + i * cols;
-
-    return matrix;
-}
-
-/**
- * @brief Frees the specified matrix allocated by init_matrix
- * ATTENTION: Only use this on matrixes that have been allocated by init_matrix
- * 
- * @param matrix 
- */
-void free_bool_matrix(bool **matrix) {
-    free(matrix[0]);
-    free(matrix);
-}
 
 /**
  * @brief The function splits the string by the separator into an array of pointers
@@ -57,6 +22,23 @@ void split(char *str, char *parts[], int num_of_splits, const char *sep) {
     for (int i = 1; i < num_of_splits; i++) {
         parts[i] = strtok(NULL, sep);
     }
+}
+
+/**
+ * @brief It generates an integer based on the key
+ * Copied from here: http://www.cse.yorku.ca/~oz/hash.html
+ * 
+ * @param key The key the hash is based on
+ * @return int The generated intiger
+ */
+int hash(const char *key) {
+    int hash = 5381;
+    int c;
+
+    while ((c = *key++) != 0)
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+    return hash;
 }
 
 /**
