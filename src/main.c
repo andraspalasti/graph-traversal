@@ -28,6 +28,9 @@ int main() {
     econio_clrscr();
 
     while (state != QUIT) {
+        Node *from, *to;
+        char answer[4];
+
         switch (state) {
             case IDLE:
                 state = select_menu(menu_items);
@@ -39,6 +42,51 @@ int main() {
 
             case SAVE_GRAPH:
                 state = save_graph_menu(g);
+                break;
+
+            case ADD_EDGE:
+                econio_clrscr();
+                printf("Type in the node's name where the edge would start from\n");
+                from = find_node_from_console(g);
+
+                printf("Type in the node's name where the edge would end\n");
+                to = find_node_from_console(g);
+
+                printf("Is this edge directional ? (default is no) [yes/no]\n");
+                read_str(answer, 3);
+                add_neighbour_at(0, from, to);
+                if (strcmp(answer, "yes") != 0) {
+                    add_neighbour_at(0, to, from);
+                }
+
+                econio_textcolor(COL_GREEN);
+                printf("Successfully added edge between nodes %s and %s\n", from->name, to->name);
+                econio_sleep(TIME_TO_READ_MSG);
+                econio_textcolor(COL_RESET);
+
+                state = IDLE;
+                break;
+
+            case REMOVE_EDGE:
+                econio_clrscr();
+                printf("Type in the node's name where the edge starts from\n");
+                from = find_node_from_console(g);
+
+                printf("Type in the node's name where the edge ends\n");
+                to = find_node_from_console(g);
+
+                printf("Should I delete the edge both ways ? (default is yes) [yes/no]\n");
+                read_str(answer, 3);
+                remove_neighbour(from, to);
+                if (strcmp(answer, "no") != 0) {
+                    remove_neighbour(to, from);
+                }
+
+                econio_textcolor(COL_GREEN);
+                printf("Successfully deleted edge between nodes %s and %s\n", from->name, to->name);
+                econio_sleep(TIME_TO_READ_MSG);
+                econio_textcolor(COL_RESET);
+                state = IDLE;
                 break;
 
             case DISPLAY_GRAPH:
@@ -58,10 +106,10 @@ int main() {
                 econio_clrscr();
 
                 printf("Type in the node's name where the path should start from\n");
-                Node *from = find_node_from_console(g);
+                from = find_node_from_console(g);
 
                 printf("Type in the node's name where the path should end\n");
-                Node *to = find_node_from_console(g);
+                to = find_node_from_console(g);
 
                 Path *p = find_path(g, from, to);
                 if (p == NULL) {
