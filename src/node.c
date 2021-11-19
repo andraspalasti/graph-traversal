@@ -59,7 +59,6 @@ Node *init_node(const char *name, Coordinates coords) {
     check_malloc(n);
 
     strcpy(n->name, name);
-    n->idx = -1;
     n->coords = coords;
     n->neighbours = NULL;
     return n;
@@ -81,8 +80,6 @@ void free_node(Node *n) {
  * @param n Node to print
  */
 void print_node(const Node *n) {
-    if (n->idx != -1)
-        printf("idx: %d, ", n->idx);
     printf("name: %s, coords: ", n->name);
     print_coords(n->coords);
 
