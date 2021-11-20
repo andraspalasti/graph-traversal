@@ -18,7 +18,7 @@ static void read_edges_from_csv(FILE *fp, Graph *g);
  * @brief Reads a csv file into a graph
  * 
  * @param fpath path of csv file
- * @param g 
+ * @param g The graph to read into
  */
 void read_graph_from_csv(const char *fpath, Graph *g) {
     assert(strstr(fpath, ".csv") != NULL);
@@ -39,8 +39,8 @@ void read_graph_from_csv(const char *fpath, Graph *g) {
 /**
  * @brief Reads the nodes from file
  * 
- * @param fp 
- * @param g 
+ * @param fpath path of csv file
+ * @param g The graph to read into
  */
 static void read_nodes_from_csv(FILE *fp, Graph *g) {
     int line_num = 1;

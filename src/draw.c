@@ -18,9 +18,6 @@
  * @param g The graph to draw
  */
 void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
-    assert(g != NULL);
-    assert(renderer != NULL);
-    assert(font != NULL);
 
     // the nodes that already have every edge drawn
     bool *arr = calloc(g->used, sizeof(bool));
