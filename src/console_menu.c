@@ -5,6 +5,8 @@
 #include "graph.h"
 #include "node.h"
 #include "util.h"
+#include "visualization.h"
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -19,7 +21,6 @@
  * @return enum MenuState The selected menu state
  */
 enum MenuState select_menu(const char *menu_items[]) {
-    econio_clrscr();
     int selected_action = LOAD_GRAPH;
     econio_rawmode();
     while (true) {
@@ -136,4 +137,33 @@ Node *find_node_from_console(const Graph *g) {
         node = find_node(g, node_name);
     }
     return node;
+}
+
+/**
+ * @brief Creates a node from the data that it reads from the console
+ * It reads the node's name and coordinates
+ * 
+ * @return Node* Returns the pointer to the new node
+ */
+Node *read_node_from_console() {
+    printf("Type in the node's name (at max it can be %d chars)\n", NODE_NAME_LEN);
+    char node_name[NODE_NAME_LEN + 1];
+    read_str(node_name, NODE_NAME_LEN);
+
+    double x = 0, y = 0;
+    printf("Type in the coordinates of the node in this format: 'x,y' (the default is: 0,0)\n");
+    scanf("%lf,%lf", &x, &y);
+    while (fabs(x) > MAX_X_COORD || fabs(y) > MAX_Y_COORD) {
+        if (fabs(x) > MAX_X_COORD) {
+            print_error("X coordinate should be between %d and %d\n", MAX_X_COORD, -MAX_X_COORD);
+        }
+        if (fabs(y) > MAX_Y_COORD) {
+            print_error("Y coordinate should be between %d and %d\n", MAX_Y_COORD, -MAX_Y_COORD);
+        }
+        x = 0, y = 0;
+        printf("Type in the coordinates of the node in this format: 'x,y' (the default is: 0,0)\n");
+        scanf("%lf,%lf", &x, &y);
+    }
+
+    return init_node(node_name, (Coordinates){.x = x, .y = y});
 }

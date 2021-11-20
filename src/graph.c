@@ -23,8 +23,6 @@ Node *find_node(const Graph *g, const char *name) {
 
 /**
  * @brief Adds node to the end of the graph.
- * It has a side effect:
- * it sets the node's idx field to the corresponding index
  * 
  * @param g Graph
  * @param n Node to add to graph
@@ -32,7 +30,7 @@ Node *find_node(const Graph *g, const char *name) {
 void add_node_to_graph(Graph *g, Node *n) {
     // the allocated array is full
     if (g->used == g->capacity) {
-        g->nodes = realloc(g->nodes, g->capacity + 10);
+        g->nodes = (Node **)realloc(g->nodes, (g->capacity + 10) * sizeof(Node *));
         check_malloc(g->nodes);
         g->capacity += 10;
     }
@@ -65,7 +63,7 @@ void delete_node_from_graph(Graph *g, Node *n) {
     }
     g->used -= 1;
     if (g->used < g->capacity - 10) {
-        g->nodes = realloc(g->nodes, g->capacity - 10);
+        g->nodes = realloc(g->nodes, (g->capacity - 10) * sizeof(Node *));
         check_malloc(g->nodes);
         g->capacity -= 10;
     }

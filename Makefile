@@ -42,4 +42,5 @@ $(OBJ)/%.o: $(SRC)/%.c
 
 clean:
 	$(RM) $(TARGET)
+	$(RM) -r *.dSYM
 	$(RM) -r $(OBJ)

@@ -33,7 +33,9 @@ double distance(Coordinates a, Coordinates b) {
  * @return Coordinates The normalized coordinates
  */
 Coordinates normalize_coords(Coordinates coords, int width, int height) {
-    return (Coordinates){.x = coords.x + (double)width / 2.0, .y = coords.y + (double)height / 2.0};
+    coords.x += (double)width / 2.0;
+    coords.y = (double)height / 2.0 - coords.y;
+    return coords;
 }
 
 /**
@@ -44,7 +46,9 @@ Coordinates normalize_coords(Coordinates coords, int width, int height) {
  * @return Coordinates The scaled coordinates
  */
 Coordinates scale(double lambda, Coordinates coords) {
-    return (Coordinates){.x = lambda * coords.x, .y = lambda * coords.y};
+    coords.x *= lambda;
+    coords.y *= lambda;
+    return coords;
 }
 
 /**
@@ -71,7 +75,9 @@ Coordinates rotate_around(Coordinates origin, Coordinates coords, double alpha) 
  * @return Coordinates 
  */
 Coordinates add(Coordinates c1, Coordinates c2) {
-    return (Coordinates){.x = c1.x + c2.x, .y = c1.y + c2.y};
+    c1.x += c2.x;
+    c1.y += c2.y;
+    return c1;
 }
 
 /**
@@ -82,5 +88,7 @@ Coordinates add(Coordinates c1, Coordinates c2) {
  * @return Coordinates 
  */
 Coordinates subtract(Coordinates c1, Coordinates c2) {
-    return (Coordinates){.x = c1.x - c2.x, .y = c1.y - c2.y};
+    c1.x -= c2.x;
+    c1.y -= c2.y;
+    return c1;
 }

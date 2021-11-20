@@ -33,6 +33,7 @@ int main() {
 
         switch (state) {
             case IDLE:
+                econio_clrscr();
                 state = select_menu(menu_items);
                 break;
 
@@ -42,6 +43,32 @@ int main() {
 
             case SAVE_GRAPH:
                 state = save_graph_menu(g);
+                break;
+
+            case ADD_NODE:
+                econio_clrscr();
+                Node *new_node = read_node_from_console();
+                add_node_to_graph(g, new_node);
+
+                econio_textcolor(COL_GREEN);
+                printf("You successfully created the node\n");
+                econio_sleep(TIME_TO_READ_MSG);
+                econio_textcolor(COL_RESET);
+
+                state = IDLE;
+                break;
+
+            case REMOVE_NODE:
+                econio_clrscr();
+                printf("Type in the node's name that you want to delete\n");
+                Node *to_be_deleted = find_node_from_console(g);
+                delete_node_from_graph(g, to_be_deleted);
+                econio_textcolor(COL_GREEN);
+                printf("You successfully deleted the node\n");
+                econio_sleep(TIME_TO_READ_MSG);
+                econio_textcolor(COL_RESET);
+
+                state = IDLE;
                 break;
 
             case ADD_EDGE:
@@ -90,13 +117,13 @@ int main() {
                 break;
 
             case DISPLAY_GRAPH:
+                econio_clrscr();
                 if (g->used == 0) {
                     printf("There are no nodes in your graph to display\n");
                     econio_sleep(TIME_TO_READ_MSG);
                     state = IDLE;
                     break;
                 }
-                econio_clrscr();
                 printf("Close the SDL window to continue\n");
                 display_graph(g);
                 state = IDLE;
