@@ -60,6 +60,12 @@ int main() {
 
             case REMOVE_NODE:
                 econio_clrscr();
+                if (g->used == 0) {
+                    printf("There are no nodes in your graph to delete\n");
+                    econio_sleep(TIME_TO_READ_MSG);
+                    state = IDLE;
+                    break;
+                }
                 printf("Type in the node's name that you want to delete\n");
                 Node *to_be_deleted = find_node_from_console(g);
                 delete_node_from_graph(g, to_be_deleted);
@@ -73,6 +79,13 @@ int main() {
 
             case ADD_EDGE:
                 econio_clrscr();
+                if (g->used < 2) {
+                    printf("There is not enough nodes in your graph\n");
+                    econio_sleep(TIME_TO_READ_MSG);
+                    state = IDLE;
+                    break;
+                }
+
                 printf("Type in the node's name where the edge would start from\n");
                 from = find_node_from_console(g);
 
@@ -96,6 +109,13 @@ int main() {
 
             case REMOVE_EDGE:
                 econio_clrscr();
+                if (g->used < 2) {
+                    printf("There is not enough nodes in your graph\n");
+                    econio_sleep(TIME_TO_READ_MSG);
+                    state = IDLE;
+                    break;
+                }
+
                 printf("Type in the node's name where the edge starts from\n");
                 from = find_node_from_console(g);
 
@@ -131,6 +151,12 @@ int main() {
 
             case DISPLAY_GRAPH_WITH_PATH:
                 econio_clrscr();
+                if (g->used < 2) {
+                    printf("There is not enough nodes in your graph\n");
+                    econio_sleep(TIME_TO_READ_MSG);
+                    state = IDLE;
+                    break;
+                }
 
                 printf("Type in the node's name where the path should start from\n");
                 from = find_node_from_console(g);

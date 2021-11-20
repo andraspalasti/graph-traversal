@@ -6,9 +6,9 @@
 
 // Should only use this in an SDL context
 typedef struct Animation {
-    Uint64 START_TIME;    // the start time of the animation
-    double ANIM_DURATION; // the duration of the animation in ms
-    double delta_time;    // the elapsed time since start in ms
+    Uint64 START_TIME;    /* the start time of the animation */
+    double ANIM_DURATION; /* the duration of the animation in ms */
+    double delta_time;    /* the elapsed time since start in ms */
     bool is_finished;
 } Animation;
 
