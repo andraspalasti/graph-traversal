@@ -1,6 +1,6 @@
 #include "hash_table.h"
-#include "../include/debugmalloc.h"
-#include "util.h"
+#include "../../include/debugmalloc.h"
+#include "../util.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -12,13 +12,12 @@ typedef struct Record {
 
 static struct Record *init_record(char *key, void *val);
 static void free_record(struct Record *r);
+static void set_value(HashTable *self, char *key, void *val);
+static void free_ht(HashTable *self);
+static void **get_value(const HashTable *self, const char *key);
 
 /**
  * @brief Instantiates a HashTable
- * ATTENTION: You have to be very carefull with the hash table because
- * it uses void pointers to be able to use it with any type.
- * The hash table saves the pointer and not the value of the variable so if
- * the variable will go out of scope the hash table will point to a not allocated memory 
  * 
  * @param size The size of the table
  * @return HashTable* The pointer to the newly created hash table
@@ -33,6 +32,9 @@ HashTable *init_ht(int size) {
 
     hash_table->size = size;
     hash_table->records = data;
+    hash_table->get = get_value;
+    hash_table->set = set_value;
+    hash_table->ht_free = free_ht;
 
     return hash_table;
 }
@@ -42,14 +44,14 @@ HashTable *init_ht(int size) {
  * than it overrides its value pointer
  * else it inserts the specified pointer in
  * 
- * @param ht The hash table to insert in
+ * @param self The hash table to insert in
  * @param key The key to search for
- * @param val The pointer to the data
+ * @param val The value that you want to insert
  */
-void ht_set_value_ptr(HashTable *ht, char *key, void *val) {
-    int idx = hash(key) % ht->size;
+static void set_value(HashTable *self, char *key, void *val) {
+    int idx = hash(key) % self->size;
     Record *prev_r = NULL;
-    Record *r = ht->records[idx];
+    Record *r = self->records[idx];
     while (r != NULL && strcmp(key, r->key) != 0) {
         prev_r = r;
         r = r->next;
@@ -60,7 +62,7 @@ void ht_set_value_ptr(HashTable *ht, char *key, void *val) {
         Record *new_data = init_record(key, val);
         // its the start of the list
         if (prev_r == NULL)
-            ht->records[idx] = new_data;
+            self->records[idx] = new_data;
         else
             prev_r->next = new_data;
         return;
@@ -75,31 +77,31 @@ void ht_set_value_ptr(HashTable *ht, char *key, void *val) {
  * If the key is found than it returns a pointer to its value
  * else it returns a NULL pointer
  * 
- * @param ht The hash table to search in
+ * @param self The hash table to search in
  * @param key The key to search for
  * @return void* The pointer to the value
  */
-void *ht_get_value(const HashTable *ht, const char *key) {
-    int idx = hash(key) % ht->size;
-    Record *r = ht->records[idx];
+static void **get_value(const HashTable *self, const char *key) {
+    int idx = hash(key) % self->size;
+    Record *r = self->records[idx];
     while (r != NULL && strcmp(key, r->key) != 0) {
         r = r->next;
     }
 
-    return r == NULL ? NULL : r->val;
+    return r == NULL ? NULL : &(r->val);
 }
 
 /**
  * @brief Frees the specified HashTable
  * ATTENTION: it does not free the values used in the table
  * 
- * @param ht The hash table to free
+ * @param self The hash table to free
  */
-void ht_free(HashTable *ht) {
-    for (int i = 0; i < ht->size; i++) {
+static void free_ht(HashTable *self) {
+    for (int i = 0; i < self->size; i++) {
 
         // we need to free all records in the row
-        Record *r = ht->records[i];
+        Record *r = self->records[i];
         while (r != NULL) {
             Record *tmp = r->next;
             free_record(r);
@@ -107,8 +109,8 @@ void ht_free(HashTable *ht) {
         }
     }
 
-    free(ht->records);
-    free(ht);
+    free(self->records);
+    free(self);
 }
 
 /**

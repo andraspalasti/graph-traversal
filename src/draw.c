@@ -2,7 +2,7 @@
 #include "../include/debugmalloc.h"
 #include "coordinates.h"
 #include "graph.h"
-#include "hash_table.h"
+#include "hash_tables/hash_table_b.h"
 #include "sdl_helpers.h"
 #include "util.h"
 #include "visualization.h"
@@ -20,11 +20,9 @@
 void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
 
     // the nodes that already have every edge drawn
-    bool *arr = calloc(g->used, sizeof(bool));
-    check_malloc(arr);
-    HashTable *drawn_nodes = init_ht(g->used);
+    HashTableB *drawn_nodes = init_ht_b(g->used);
     for (int i = 0; i < g->used; i++)
-        ht_set_value_ptr(drawn_nodes, g->nodes[i]->name, &(arr[i]));
+        drawn_nodes->set(drawn_nodes, g->nodes[i]->name, false);
 
     // draw edges first so they dont overlap nodes
     for (int i = 0; i < g->used; i++) {
@@ -32,7 +30,7 @@ void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
         while (neighbour != NULL) {
             bool is_directed = is_connected(neighbour->node, g->nodes[i]);
 
-            bool *is_drawn = ht_get_value(drawn_nodes, neighbour->node->name);
+            bool *is_drawn = drawn_nodes->get(drawn_nodes, neighbour->node->name);
             assert(is_drawn != NULL);
 
             if (is_directed && !*is_drawn) {
@@ -45,16 +43,14 @@ void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
         }
 
         // mark this node as drawn because we have drawn all its edges
-        bool *is_drawn = ht_get_value(drawn_nodes, g->nodes[i]->name);
-        assert(is_drawn != NULL);
-        *is_drawn = true;
+        drawn_nodes->set(drawn_nodes, g->nodes[i]->name, true);
     }
 
     for (int i = 0; i < g->used; i++) {
         draw_node(renderer, font, g->nodes[i], NODE_RADIUS);
     }
-    ht_free(drawn_nodes);
-    free(arr);
+
+    drawn_nodes->ht_free(drawn_nodes);
 }
 
 /**
