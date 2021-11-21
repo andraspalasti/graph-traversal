@@ -11,9 +11,7 @@
 #include <string.h>
 
 /**
- * @brief This function clears the console and draws the menu 
- * with the specified menu items
- * It also creates an environment in the console where you can
+ * @brief It creates an environment in the console where you can
  * select one of the actions from the console and it returns
  * the selected menu state
  * 

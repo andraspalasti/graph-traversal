@@ -54,17 +54,3 @@ void restart_animation(Animation *anim) {
 void free_animation(Animation *anim) {
     free(anim);
 }
-
-/**
- * @brief This is a cubic bezier function
- * With P0(0, 0) and P3(1, 1) already defined in it
- * 
- * @param x1 X coord of P1
- * @param x2 X coord of P2
- * @param t The functions parameter
- * @return It returns x(t) given x1, x2, t 
- */
-double cubic_bezier(double x1, double x2, double t) {
-    assert(1 >= t && t >= 0);
-    return (((1.0 - 3.0 * x2 + 3.0 * x1) * t + 3.0 * x2 - 6.0 * x1) * t + 3.0 * x1) * t;
-}

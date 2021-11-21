@@ -14,7 +14,7 @@ void print_coords(Coordinates coords) {
 }
 
 /**
- * @brief Returns the distance between the specified nodes
+ * @brief Returns the distance between the specified coords
  * 
  * @param a 
  * @param b 

@@ -59,6 +59,8 @@ void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
  * @param renderer 
  * @param n1 
  * @param n2 
+ * @param node_radius 
+ * @param color The color of the line
  */
 void draw_line_between_nodes(SDL_Renderer *renderer, const Node *n1, const Node *n2, double node_radius, Uint32 color) {
     Coordinates vector[2];
@@ -72,6 +74,8 @@ void draw_line_between_nodes(SDL_Renderer *renderer, const Node *n1, const Node 
  * @param renderer 
  * @param n1 The node that the arrow starts from
  * @param n2 The node that the arrow points to
+ * @param node_radius 
+ * @param color 
  */
 void draw_arrow_between_nodes(SDL_Renderer *renderer, const Node *n1, const Node *n2, double node_radius, Uint32 color) {
     Coordinates vector[2];
