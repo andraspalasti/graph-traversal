@@ -1,11 +1,11 @@
 #include "visualization.h"
-#include "../include/debugmalloc.h"
+#include "../../include/debugmalloc.h"
+#include "../coordinates.h"
+#include "../path_finding.h"
+#include "../util.h"
 #include "animations.h"
-#include "coordinates.h"
 #include "draw.h"
-#include "path_finding.h"
 #include "sdl_helpers.h"
-#include "util.h"
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>
 #include <assert.h>

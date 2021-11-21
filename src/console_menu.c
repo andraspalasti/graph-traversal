@@ -5,7 +5,7 @@
 #include "graph.h"
 #include "node.h"
 #include "util.h"
-#include "visualization.h"
+#include "visualization/visualization.h"
 #include <math.h>
 #include <stdio.h>
 #include <string.h>

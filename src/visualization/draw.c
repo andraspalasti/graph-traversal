@@ -1,10 +1,10 @@
 #include "draw.h"
-#include "../include/debugmalloc.h"
-#include "coordinates.h"
-#include "graph.h"
-#include "hash_tables/hash_table_b.h"
+#include "../../include/debugmalloc.h"
+#include "../coordinates.h"
+#include "../graph.h"
+#include "../hash_tables/hash_table_b.h"
+#include "../util.h"
 #include "sdl_helpers.h"
-#include "util.h"
 #include "visualization.h"
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>

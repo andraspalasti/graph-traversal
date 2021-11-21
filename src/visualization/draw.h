@@ -1,8 +1,8 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#include "graph.h"
-#include "path_finding.h"
+#include "../graph.h"
+#include "../path_finding.h"
 #include <SDL.h>
 #include <SDL_ttf.h>
 

@@ -7,7 +7,7 @@
 #include "node.h"
 #include "path_finding.h"
 #include "util.h"
-#include "visualization.h"
+#include "visualization/visualization.h"
 #include <stdio.h>
 #include <stdlib.h>
 

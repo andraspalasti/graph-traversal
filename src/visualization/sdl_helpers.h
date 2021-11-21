@@ -1,7 +1,7 @@
 #ifndef SDL_HELPERS
 #define SDL_HELPERS
 
-#include "coordinates.h"
+#include "../coordinates.h"
 #include <SDL.h>
 #include <SDL_ttf.h>
 

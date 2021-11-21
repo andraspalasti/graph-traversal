@@ -1,8 +1,8 @@
 #ifndef VISUALIZATION_H
 #define VISUALIZATION_H
 
-#include "graph.h"
-#include "path_finding.h"
+#include "../graph.h"
+#include "../path_finding.h"
 #include <SDL.h>
 #include <SDL_ttf.h>
 

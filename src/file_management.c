@@ -2,7 +2,7 @@
 #include "../include/debugmalloc.h"
 #include "graph.h"
 #include "util.h"
-#include "visualization.h"
+#include "visualization/visualization.h"
 #include <assert.h>
 #include <errno.h>
 #include <math.h>
