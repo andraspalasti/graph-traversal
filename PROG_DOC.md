@@ -426,3 +426,155 @@ Coordinates subtract(Coordinates c1, Coordinates c2);
 ```
 
 ---
+
+## `file_management`
+
+**Struktúrák:** Nincsenek
+
+**Függvények:**
+
+Beolvassa az `fpath`-el megadott fájlt egy gráfba ha nem tudja beolvasni a fájlt akkor kilép a programból és kiír egy hibaüzenetet.
+
+```c
+void read_graph_from_csv(const char *fpath, Graph *g);
+```
+
+Beolvassa a csúcsokat a megadott fájlból a megadott gráfba.
+Ha valamilyen hibát észlel a fájlban akkor kilép és kiírja a hibaüzenetet.
+
+```c
+static void read_nodes_from_csv(FILE *fp, Graph *g) {
+```
+
+Beolvassa az éleket a megadott fájlból a megadott gráfba.
+Ha valamilyen hibát észlel a fájlban akkor kilép és kiírja a hibaüzenetet.
+
+```c
+static void read_edges_from_csv(FILE *fp, Graph *g);
+```
+
+Elmenti a megadott gráfot egy csv fájlba.
+Ha nem tudja megnyitni a fájlt akkor kiírja a hibaüzenetet majd kilép.
+
+```c
+void save_graph_to_csv(const char *fpath, const Graph *g);
+```
+
+---
+
+## `graph`
+
+**Struktúrák:**
+
+```c
+typedef struct Graph {
+    Node **nodes; /* A csúcsok a gráfban */
+    int used; /* Mennyit használ a lefoglalt tömbből */
+    int capacity; /* Mennyi a lefoglalt tömb mérete */
+} Graph;
+```
+
+**Függvények:**
+
+Megkeresi a gráfban a megadott névvel ellátott csúcsot.
+Ha benne van vissza adja ha nem akkor NULL pointert ad vissza.
+
+```c
+Node *find_node(const Graph *g, const char *name);
+```
+
+Hozzáadja a csúcsot a gráfhoz (beszúrja a végére).
+
+```c
+void add_node_to_graph(Graph *g, Node *n);
+```
+
+Kitörli a csúcsot és az összes hozzá tartozó élt a gráfból.
+Majd felszabadítja a csúcsot.
+
+```c
+void delete_node_from_graph(Graph *g, Node *n);
+```
+
+Példányosít egy gráf struktúrát alapértelmezetten 10 csúcsnak foglal benne helyet.
+
+```c
+Graph *init_graph(void);
+```
+
+Felszabadítja a gráf által lefoglalt területet.
+
+```c
+void free_graph(Graph *g);
+```
+
+Kiírja a konzolra a gráfot egy szépen formázott formátumban.
+
+```c
+void print_graph(const Graph *g);
+```
+
+---
+
+## `list_node`
+
+**Struktúrák:**
+
+Egy láncolt lista amely csúcsok sokaságát tudja tárolni.
+
+```c
+typedef struct ListNode {
+    struct Node *node;          /* A csúcs */
+    struct ListNode *next_node; /* A következő csúcs a listában */
+} ListNode;
+```
+
+**Függvények:**
+
+Hozzáad egy csúcsot a láncolt listához egy adott pozizióban.
+Ha a lista nem tartalmaz annyi elemet mint a pozíció ami meg van adva akkor a csúcs a lista legvégére lesz beszúrva.
+Ha a pozíziónak negatív értéket adunk akkor a csúcs ugyancsak a lista végére lesz beszúrva.
+
+```c
+void add_node_at(int pos, ListNode **head, Node *n);
+```
+
+Megkeresi a listában az adott csúcsot és kitörli onnan.
+A csúcsot nem szabadítja fel.
+
+```c
+void delete_node(ListNode **head, struct Node *n) {
+```
+
+Visszaadja hogy hány elemet tartalmaz a láncolt lista
+
+```c
+int list_node_len(ListNode *ln) {
+    int len = 0;
+    while (ln != NULL) {
+        ln = ln->next_node;
+        len++;
+    }
+    return len;
+}
+```
+
+Példányosít egy láncolt lista elemet az adott csúccsal a belsejében.
+
+```c
+ListNode *init_list_node(struct Node *n);
+```
+
+Felszabadítja a láncolt lista által lefoglalt területet rekurzívan.
+
+```c
+void free_list_node(ListNode *list_node);
+```
+
+Egy szépen formázott módon kiírja a láncolt listát a konzolra.
+
+```c
+void print_list_node(const ListNode *list_node);
+```
+
+---
