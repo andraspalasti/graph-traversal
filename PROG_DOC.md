@@ -578,3 +578,99 @@ void print_list_node(const ListNode *list_node);
 ```
 
 ---
+
+## `node`
+
+**Struktúrák és globális változók:**
+
+```c
+NODE_NAME_LEN /* Megadja hogy a Node name mezője hány karaktert tud tárolni*/
+
+typedef struct Node {
+    char name[NODE_NAME_LEN + 1];   /* A csúcs neve */
+    Coordinates coords;             /* A csúcs koordinátái */
+    struct ListNode *neighbours;    /* A csúcs szomszédai */
+} Node;
+```
+
+**Függvények:**
+
+A csúcs szomszédaihoz hozzáadja a másik csúcsot.
+Az `add_node_at` függvényt hívja meg a csúcs `neighbour` mezőjére, tehát ugyan úgy működik.
+
+```c
+void add_neighbour_at(int pos, Node *n, Node *adjacent_node);
+```
+
+A csúcs szomszédai közül kitörli a másik csúcsot.
+A `delete_node` függvényt hívja meg a csúcs `neighbour` mezőjére, tehát ugyan úgy működik.
+
+```c
+void remove_neighbour(Node *n, Node *neighbour);
+```
+
+Megnézi hogy az `a` csúcs szomdai között ott van-e a `b` csúcs.
+Ha igen igaz értéket ad vissza ha nem akkor pedig hamisat.
+
+```c
+bool is_connected(const Node *a, const Node *b);
+```
+
+Példányosít egy új csúcsot. A `name` hosszának mindenféleképpen a `NODE_NAME_LEN` váltózó értékénél kissebbnek kell lennie.
+
+```c
+Node *init_node(const char *name, Coordinates coords);
+```
+
+Felszabadítja a memóriát amit az adott csúcs lefoglalt.
+
+```c
+void free_node(Node *n);
+```
+
+Kiírja a konzolra a csúcsot egy szép formátumban.
+
+```c
+void print_node(const Node *n);
+```
+
+---
+
+## `path_finding`
+
+**Struktúrák:**
+
+Ez a `ListNode` struktúra csak átnevezve. Így jobban reprezentálja a fájl beli szerepét.
+
+```c
+typedef struct ListNode Path;
+```
+
+**Függvények:**
+
+Az Dijkstra algoritmusával megtalálja a legrövidebb utat két csúcs között.
+Ha nincs út a két csúcs között akkor NULL pointert ad vissza.
+Ha van út akkor egy láncolt listát ad vissza ami tartalmazza hogy melyik pontbol melyikbe kell menni hogy eljussunk a célba.
+
+```c
+Path *find_path(Graph *g, Node *src, Node *target);
+```
+
+Felszabadítja a paraméterként átadott `Path` által lefoglalt területet.
+
+```c
+void free_path(Path *p);
+```
+
+Egy szépen formázott módon kiírja a konzolra a `p` paraméter értékét.
+
+````c
+void print_path(Path *p);
+```
+
+Megkeresi a `Queue`-ban azt a csúcsot aminek az értéke a `dist` hash táblában a legkissebb.
+```c
+static Node *nearest_node(const Queue *q, const HashTableD *dist);
+````
+
+---
