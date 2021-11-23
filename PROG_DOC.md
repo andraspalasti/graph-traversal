@@ -81,9 +81,7 @@ Ha megtalálja a kulcsot a hash táblában akkor felülírja a hozzá tartozó a
 static void set_value(HashTable *self, char *key, void *val);
 ```
 
-Megkeresi a paraméterként átadott kulcsot a paraméterként átadott hash táblában
-ha megtalálta akkor visszaadja a pointert a rá mutató adatra
-ha nem akkor NULL pointert ad vissza
+Megkeresi a paraméterként átadott kulcsot a paraméterként átadott hash táblában ha megtalálta akkor visszaadja a pointert a rá mutató adatra ha nem akkor NULL pointert ad vissza.
 
 ```c
 static void **get_value(const HashTable *self, const char *key);
@@ -124,17 +122,13 @@ typedef struct Animation {
 
 **Függvények:**
 
-Példányosít egy animáció struktúrát ekkor kérdezi le az időt és teszi be a
-`START_TIME` mezőbe. SDL-t használ hogy megnézze az időt tehát csak ott lehet használni ahol már
-példányosítva van az SDL.
-Paramétere az animáció hossza ms-ban
+Példányosít egy animáció struktúrát ekkor kérdezi le az időt és teszi be a `START_TIME` mezőbe. SDL-t használ hogy megnézze az időt tehát csak ott lehet használni ahol már példányosítva van az SDL. Paramétere az animáció hossza ms-ban
 
 ```c
 Animation *init_animation(double animation_duration);
 ```
 
-Frissíti az animációt tehát megnézi újra az időt és beteszi ezt az animáció
-`delta_time` mezőjébe és az animáció `is_finished` státuszát is frissíti.
+Frissíti az animációt tehát megnézi újra az időt és beteszi ezt az animáció `delta_time` mezőjébe és az animáció `is_finished` státuszát is frissíti.
 
 ```c
 void update_animation(Animation *anim);
@@ -166,32 +160,25 @@ A paraméterként átadott gráfot rajzolja ki a `renderer`-re a `font` segíts�
 void draw_graph(SDL_Renderer *renderer, TTF_Font *font, const Graph *g) {
 ```
 
-Rajzol egy egynest ami összeköti a két csúcsot
-a `node_radius` itt a csúcsok sugara ez azért kell mivel nem a csúcsok középpontját köti
-össze hanem a megrajzolt körök szélét
-A `color` paraméter az egyenes színét határozza meg.
+Rajzol egy egynest ami összeköti a két csúcsot a `node_radius` itt a csúcsok sugara ez azért kell mivel nem a csúcsok középpontját köti össze hanem a megrajzolt körök szélét. A `color` paraméter az egyenes színét határozza meg.
 
 ```c
 void draw_line_between_nodes(SDL_Renderer *renderer, const Node *n1, const Node *n2, double node_radius, Uint32 color);
 ```
 
-Rajzol egy nyilat ami összeköti a két csúcsot. A nyíl az első csúcstól indul a másodikba.
-A `color` paraméter a nyíl színét határozza meg.
+Rajzol egy nyilat ami összeköti a két csúcsot. A nyíl az első csúcstól indul a másodikba. A `color` paraméter a nyíl színét határozza meg.
 
 ```c
 void draw_arrow_between_nodes(SDL_Renderer *renderer, const Node *n1, const Node *n2, double node_radius, Uint32 color);
 ```
 
-Egy egyenest rajzol amely összeköti a paraméterként kapott koordinátákat.
-A `color` paraméter az egyenes színét határozza meg.
+Egy egyenest rajzol amely összeköti a paraméterként kapott koordinátákat. A `color` paraméter az egyenes színét határozza meg.
 
 ```c
 void draw_line(SDL_Renderer *renderer, Coordinates c1, Coordinates c2, Uint32 color);
 ```
 
-Egy nyílat rajzol amely összeköti a paraméterként kapott koordinátákat.
-Az első koordinátából indul a nyíl a másodikba.
-A `color` paraméter az egyenes színét határozza meg.
+Egy nyílat rajzol amely összeköti a paraméterként kapott koordinátákat. Az első koordinátából indul a nyíl a másodikba. A `color` paraméter az egyenes színét határozza meg.
 
 ```c
 void draw_arrow(SDL_Renderer *renderer, Coordinates from, Coordinates to, Uint32 color);
@@ -207,10 +194,7 @@ Egy csúcsot rajzol. Paraméterek:
 void draw_node(SDL_Renderer *renderer, TTF_Font *font, const Node *n, double node_radius);
 ```
 
-Módosítja a paraméterként beadott `vector` változót
-úgy hogy a két csúcsot összekötő egyenes két végpontjának koordinátája legyen benne.
-A `node_radius` itt a csúcsok sugara ez azért kell mivel nem a csúcsok középpontját köti
-össze hanem a megrajzolt körök szélét
+Módosítja a paraméterként beadott `vector` változót úgy hogy a két csúcsot összekötő egyenes két végpontjának koordinátája legyen benne. A `node_radius` itt a csúcsok sugara ez azért kell mivel nem a csúcsok középpontját köti össze hanem a megrajzolt körök szélét.
 
 ```c
 void get_vector(Coordinates *vector, const Node *n1, const Node *n2, double node_radius);
@@ -531,16 +515,13 @@ typedef struct ListNode {
 
 **Függvények:**
 
-Hozzáad egy csúcsot a láncolt listához egy adott pozizióban.
-Ha a lista nem tartalmaz annyi elemet mint a pozíció ami meg van adva akkor a csúcs a lista legvégére lesz beszúrva.
-Ha a pozíziónak negatív értéket adunk akkor a csúcs ugyancsak a lista végére lesz beszúrva.
+Hozzáad egy csúcsot a láncolt listához egy adott pozizióban. Ha a lista nem tartalmaz annyi elemet mint a pozíció ami meg van adva akkor a csúcs a lista legvégére lesz beszúrva. Ha a pozíziónak negatív értéket adunk akkor a csúcs ugyancsak a lista végére lesz beszúrva.
 
 ```c
 void add_node_at(int pos, ListNode **head, Node *n);
 ```
 
-Megkeresi a listában az adott csúcsot és kitörli onnan.
-A csúcsot nem szabadítja fel.
+Megkeresi a listában az adott csúcsot és kitörli onnan. A csúcsot nem szabadítja fel.
 
 ```c
 void delete_node(ListNode **head, struct Node *n) {
@@ -595,22 +576,19 @@ typedef struct Node {
 
 **Függvények:**
 
-A csúcs szomszédaihoz hozzáadja a másik csúcsot.
-Az `add_node_at` függvényt hívja meg a csúcs `neighbour` mezőjére, tehát ugyan úgy működik.
+A csúcs szomszédaihoz hozzáadja a másik csúcsot. Az `add_node_at` függvényt hívja meg a csúcs `neighbour` mezőjére, tehát ugyan úgy működik.
 
 ```c
 void add_neighbour_at(int pos, Node *n, Node *adjacent_node);
 ```
 
-A csúcs szomszédai közül kitörli a másik csúcsot.
-A `delete_node` függvényt hívja meg a csúcs `neighbour` mezőjére, tehát ugyan úgy működik.
+A csúcs szomszédai közül kitörli a másik csúcsot. A `delete_node` függvényt hívja meg a csúcs `neighbour` mezőjére, tehát ugyan úgy működik.
 
 ```c
 void remove_neighbour(Node *n, Node *neighbour);
 ```
 
-Megnézi hogy az `a` csúcs szomdai között ott van-e a `b` csúcs.
-Ha igen igaz értéket ad vissza ha nem akkor pedig hamisat.
+Megnézi hogy az `a` csúcs szomdai között ott van-e a `b` csúcs. Ha igen igaz értéket ad vissza ha nem akkor pedig hamisat.
 
 ```c
 bool is_connected(const Node *a, const Node *b);
@@ -648,9 +626,7 @@ typedef struct ListNode Path;
 
 **Függvények:**
 
-Az Dijkstra algoritmusával megtalálja a legrövidebb utat két csúcs között.
-Ha nincs út a két csúcs között akkor NULL pointert ad vissza.
-Ha van út akkor egy láncolt listát ad vissza ami tartalmazza hogy melyik pontbol melyikbe kell menni hogy eljussunk a célba.
+Dijkstra algoritmusával megtalálja a legrövidebb utat két csúcs között. Ha nincs út a két csúcs között akkor NULL pointert ad vissza. Ha van út akkor egy láncolt listát ad vissza ami tartalmazza hogy melyik pontbol melyikbe kell menni hogy eljussunk a célba.
 
 ```c
 Path *find_path(Graph *g, Node *src, Node *target);
@@ -664,13 +640,104 @@ void free_path(Path *p);
 
 Egy szépen formázott módon kiírja a konzolra a `p` paraméter értékét.
 
-````c
+```c
 void print_path(Path *p);
 ```
 
 Megkeresi a `Queue`-ban azt a csúcsot aminek az értéke a `dist` hash táblában a legkissebb.
+
 ```c
 static Node *nearest_node(const Queue *q, const HashTableD *dist);
-````
+```
 
 ---
+
+## `queue`
+
+**Struktúrák:**
+
+```c
+typedef struct Queue {
+    ListNode *head; /* Pointer a queue első eleméhez */
+    ListNode *last; /* Pointer a queue utolsó eleméhez hogy gyors legyen az beillesztés */
+} Queue;
+```
+
+**Függvények:**
+
+Példányosít egy új `queue`-t az alapértelmezett változókkal.
+
+```c
+Queue *init_queue();
+```
+
+Beilleszt egy csúcsot a `queue` végére.
+
+```c
+void enqueue(Queue *q, Node *n);
+```
+
+Eltávolítja azt a csúcsot a `queue`-ból amelyiket átadtuk paraméterként. Ha a csúcs nincs benne a `queue`-ban akkor nem módosítja azt.
+
+```c
+void dequeue(Queue *q, Node *n);
+```
+
+Felszabadítja a `queue`-t és a benne lévő elemeket.
+
+```c
+void free_queue(Queue *q) {
+    free_list_node(q->head);
+    free(q);
+}
+```
+
+---
+
+## `util`
+
+**Struktúrák:** Nincsenek
+
+**Függvények:**
+
+A függvény szétválasztja az `str` paramétert `sep`-enként, majd a string szeleteket beteszi a `parts` paraméterbe. A függvény annyiszor választja szét a stringet amennyi a `num_of_splits` paraméter értéke feltéve hogy van is annyi `sep` karakter benne. Az eredeti `str`-t megváltoztatja mivel a `sep`-ek helyére `\0`-t tesz. **FONTOS:** ha nem akarsz buffer overflow-t akkor a `parts` tömb legyen legakább akkora mint a `num_of_splits` paraméter értéke.
+
+```c
+void split(char *str, char *parts[], int num_of_splits, const char *sep);
+```
+
+A `key` paraméter alapján generál egy számot. A hash táblánál ezt használom hash függvénynek. Ideális mivel jó nagy a szórása, az interneten találtam itt: http://www.cse.yorku.ca/~oz/hash.html
+
+```c
+int hash(const char *key);
+```
+
+Megnézi hogy az átadott `ptr` paraméter NULL pointer e, ha igen akkor kilép egy nem nulla exit kóddal és kiír egy hibaüzenetet.
+
+```c
+void check_malloc(void *ptr);
+```
+
+Az átadott `str` paraméterben kitörli a `char_to_remove` karakter összes előfordulását.
+
+```c
+void remove_chars(char *str, char char_to_remove);
+```
+
+A visszaadott string az `str` paraméter csak az elején és a végén whitespace nélkül. **FONTOS:** az eredeti string-et módosítja.
+
+```c
+char *trim(char *str);
+```
+
+Beolvas egy stringet a konzolról az `str` paraméterbe viszont csak `len` számú karaktert olvas be. `len` paraméternek 0 és 256 között kell lennie.
+
+```c
+void read_str(char *str, int len);
+```
+
+Ugyan úgy működik mint a `printf` függvény csak a szöveg elé amit kiírunk a konzolra kiírja az "ERROR: " prefixet. A szöveget pirossal írja ki a konzolra.
+
+```c
+void print_error(const char *format, ...);
+```
