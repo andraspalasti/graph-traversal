@@ -100,28 +100,6 @@ Hogy ha újra akarjuk, hogy kezdje az animációt akkor az `r` betű megnyomás�
 
 Az SDL ablak bezárásával vissza tudunk menni a fő menübe.
 
-# Hogy kell elindítani ?
-
-### Linuxon:
-
-Ha linuxon akarjuk futtatni akkor a projektben van egy Makefile
-valószínüleg át kell írni a `LIBS` változót ez a változó mondja meg a
-plusz könyvtárak elérési útját.
-
-Milyen könyvtárak kellenek? _sdl2, sdl2_gfx, SDL2_ttf_
-
-Még a `CC` váltzó értékét is át lehet írni hogy a hozzánk közelebb álló fordítót használja
-én clang-et használok.
-
-Ha lefuttatjuk a `make` parancsot akkor létre kell jönnie egy `obj` nevű könyvtárnak és egy graph-traversal nevű fájlnak
-az utóbbit kell nekünk futtatni.
-
-Található még egy test.csv fájl is a zip-ben ez egy gráfot tartalmaz amit be tudunk olvasni.
-
-### Windowson:
-
-Passz macOS-t használok de gondolom hasonlóan kell, mint ahogy linuxon.
-
 # NAGYON FONTOS!
 
 A program feltételezi, hogy a csúcsok neve mind egyedi, de nem ellenőrzi, viszont ez egy szükséges feltétele a program működésének.
